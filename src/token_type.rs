@@ -1,8 +1,11 @@
+use std::fmt::{Display, Formatter, Result};
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum TokenType {
-    LEFT_PAREN,
-    RIGHT_PAREN,
-    LEFT_BRACE,
-    RIGHT_BRACE,
+    LEFTPAREN,
+    RIGHTPAREN,
+    LEFTBRACE,
+    RIGHTBRACE,
     COMMA,
     DOT,
     MINUS,
@@ -11,13 +14,13 @@ pub enum TokenType {
     SLASH,
     STAR,
     BANG,
-    BANG_EQUAL,
+    BANGEQUAL,
     EQUAL,
-    EQUAL_EQUAL,
+    EQUALEQUAL,
     GREATER,
-    GREATER_EQUAL,
+    GREATEREQUAL,
     LESS,
-    LESS_EQUAL,
+    LESSEQUAL,
     IDENTIFIER,
     STRING,
     NUMBER,
@@ -37,4 +40,10 @@ pub enum TokenType {
     VAR,
     WHILE,
     EOF,
+}
+
+impl Display for TokenType {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "{:?}", self)
+    }
 }
