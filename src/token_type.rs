@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter, Result};
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum TokenType {
     LEFTPAREN,
     RIGHTPAREN,
@@ -22,8 +22,8 @@ pub enum TokenType {
     LESS,
     LESSEQUAL,
     IDENTIFIER,
-    STRING,
-    NUMBER,
+    STRING(String),
+    NUMBER(f64),
     AND,
     CLASS,
     ELSE,
@@ -44,6 +44,10 @@ pub enum TokenType {
 
 impl Display for TokenType {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "{:?}", self)
+        match self {
+            TokenType::STRING(_) => write!(f, "STRING"),
+            TokenType::NUMBER(_) => write!(f, "NUMBER"),
+            _ => write!(f, "{:?}", self),
+        }
     }
 }

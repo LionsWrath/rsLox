@@ -3,6 +3,7 @@ use clap::Parser;
 mod lox;
 mod token_type;
 mod token;
+mod scanner;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]

@@ -3,6 +3,9 @@ use std::io;
 use std::path::PathBuf;
 use std::process;
 
+use crate::scanner::Scanner;
+use crate::token::Token;
+
 #[path = "utils/utils.rs"] mod utils;
 
 pub struct Lox {
@@ -45,7 +48,12 @@ impl Lox {
     }
 
     fn run(&self, source: Vec<char>) {
-        println!("{:?}", source); 
+        let mut scanner = Scanner::new(source);
+        let tokens: &Vec<Token> = scanner.scan_tokens();
+
+        for token in tokens {
+            println!("TOKEN: {}", token);
+        }
     }
 
     pub fn error(&mut self, line: usize, message: String) {
