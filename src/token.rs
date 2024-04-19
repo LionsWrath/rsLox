@@ -21,6 +21,7 @@ impl Token {
         match self.kind.clone() {
             TokenType::EOF => "".to_string(),
             TokenType::STRING(lexeme) => lexeme,
+            TokenType::IDENTIFIER(ident) => ident,
             TokenType::NUMBER(num) => num.to_string(),
             kind => kind.to_string()
         } 

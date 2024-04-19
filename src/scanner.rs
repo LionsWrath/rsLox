@@ -76,6 +76,29 @@ impl Scanner {
         self.tokens.push(Token::new(kind, self.line))
     }
 
+    fn check_keyword(&self, text_token: &Vec<char>, ident: String) -> TokenType {
+        match text_token[..] {
+            ['A', 'N', 'D'] => TokenType::AND,
+            ['C', 'L', 'A', 'S', 'S'] => TokenType::CLASS,
+            ['E', 'L', 'S', 'E'] => TokenType::ELSE,
+            ['F', 'O', 'R'] => TokenType::FOR,
+            ['F', 'U', 'N'] => TokenType::FUN,
+            ['I', 'F'] => TokenType::IF,
+            ['N', 'I', 'L'] => TokenType::NIL,
+            ['O', 'R'] => TokenType::OR,
+            ['P', 'R', 'I', 'N', 'T'] => TokenType::PRINT,
+            ['R', 'E', 'T', 'U', 'R', 'N'] => TokenType::RETURN,
+            ['S', 'U', 'P', 'E', 'R'] => TokenType::SUPER,
+            ['T', 'H', 'I', 'S'] => TokenType::THIS,
+            ['T', 'R', 'U', 'E'] => TokenType::TRUE,
+            ['V', 'A', 'R'] => TokenType::VAR,
+            ['W', 'H', 'I', 'L', 'E'] => TokenType::WHILE,
+            _ => {
+                TokenType::IDENTIFIER(ident)
+            }
+        }
+    }
+
     fn scan(&mut self) {
        match self.advance() {
             '(' => self.add_token(TokenType::LEFTPAREN),
@@ -129,6 +152,7 @@ impl Scanner {
             '\n' => self.line += 1,
             '"' => self.string(),
             '0'..='9' => self.number(),
+            'a'..='z' | 'A'..='Z' => self.identifier(),
             _ => {
                 panic!("[SCANNER] Error: Unexpected character");
             }
@@ -169,6 +193,18 @@ impl Scanner {
 
         let str_token = self.source[self.start..self.current].iter().collect::<String>();
         self.add_token(TokenType::NUMBER(str_token.parse::<f64>().unwrap()));
+    }
+
+    fn identifier(&mut self) {
+
+        while self.peek().is_alphanumeric() {
+            self.advance();
+        }
+
+        let ident = self.source[self.start..self.current].iter().collect::<String>();
+        let ident_upper = ident.to_uppercase().chars().collect();
+
+        self.add_token(self.check_keyword(&ident_upper, ident));
     }
 
 }

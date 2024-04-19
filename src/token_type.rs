@@ -21,7 +21,7 @@ pub enum TokenType {
     GREATEREQUAL,
     LESS,
     LESSEQUAL,
-    IDENTIFIER,
+    IDENTIFIER(String),
     STRING(String),
     NUMBER(f64),
     AND,
@@ -37,6 +37,7 @@ pub enum TokenType {
     RETURN,
     SUPER,
     THIS,
+    TRUE,
     VAR,
     WHILE,
     EOF,
@@ -46,6 +47,7 @@ impl Display for TokenType {
     fn fmt(&self, f: &mut Formatter) -> Result {
         match self {
             TokenType::STRING(_) => write!(f, "STRING"),
+            TokenType::IDENTIFIER(_) => write!(f, "IDENTIFIER"),
             TokenType::NUMBER(_) => write!(f, "NUMBER"),
             _ => write!(f, "{:?}", self),
         }
