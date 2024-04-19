@@ -144,6 +144,8 @@ impl Scanner {
                     while self.peek() != '\n' && !self.is_at_end() {
                         self.advance();
                     }
+                } else if self.match_char('*') {
+                    self.block_comment();
                 } else {
                     self.add_token(TokenType::SLASH);
                 }
@@ -157,6 +159,30 @@ impl Scanner {
                 panic!("[SCANNER] Error: Unexpected character");
             }
         } 
+    }
+
+    fn block_comment(&mut self) {
+        while !self.is_at_end() {
+
+            if self.peek() == '\n' {
+                self.line += 1;
+                self.advance();
+            }
+
+            if self.peek() == '/' && self.peek_next() == '*' {
+                self.advance();
+                self.advance();
+                self.block_comment();
+            } 
+            
+            if self.peek() == '*' && self.peek_next() == '/' {
+                self.advance();
+                self.advance();
+                break;
+            }
+
+            self.advance();
+        }
     }
 
     fn string(&mut self) {
