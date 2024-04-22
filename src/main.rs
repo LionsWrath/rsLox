@@ -4,6 +4,7 @@ mod lox;
 mod token_type;
 mod token;
 mod scanner;
+#[path = "tools/ast.rs"] mod ast;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
