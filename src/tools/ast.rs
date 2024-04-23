@@ -1,9 +1,7 @@
 use crate::token::Token;
 
 pub enum Literal {
-    NUMBER(Token::NUMBER),
-    STRING(Token::STRING),
-
+    Object(Token),
 }
 
 pub enum UnaryOperator {
