@@ -5,6 +5,7 @@ mod token_type;
 mod token;
 mod scanner;
 #[path = "tools/ast.rs"] mod ast;
+#[path = "tools/visit.rs"] mod visit;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
