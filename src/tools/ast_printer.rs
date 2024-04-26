@@ -5,6 +5,10 @@ use crate::token::Token;
 pub struct AstPrinter;
 
 impl AstPrinter {
+    pub fn new() -> Self {
+        AstPrinter {}
+    }
+
     pub fn printer(&mut self, expr: &Expr) -> String {
         return self.visit_expr(expr);
     }
