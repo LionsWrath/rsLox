@@ -22,13 +22,13 @@ struct Args {
 
 fn main () {
 
-    // let args = Args::parse();
-    // let mut lox = lox::Lox::new();
+    let args = Args::parse();
+    let mut lox = lox::Lox::new();
 
-    // match args.input_filename {
-    //     Some(filename) => lox.run_file(&filename),
-    //     None => lox.run_prompt(),
-    // }  
+    match args.input_filename {
+        Some(filename) => lox.run_file(&filename),
+        None => lox.run_prompt(),
+    }  
 
     let expression = Box::new(Expr::BINARY(Binary::new(
         Token::new(TokenType::PLUS, 1),
