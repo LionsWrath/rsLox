@@ -38,10 +38,10 @@ impl ExprVisitor<String> for AstPrinter {
     }
     
     fn visit_grouping(&mut self, g: &Grouping) -> String {
-        return format!("({})", self.visit_expr(&g.expr));
+        return format!("(GROUP {})", self.visit_expr(&g.expr));
     }
 
     fn visit_literal(&mut self, t: &Token) -> String {
-       return t.to_string();
+       return t.get_lexeme();
     }
 }
