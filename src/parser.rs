@@ -10,4 +10,12 @@ impl Parser {
             tokens
         }
     }
+
+    fn expression() {
+        equality()
+    }
+
+    fn equality() {
+        unimplemented!()
+    }
 }
