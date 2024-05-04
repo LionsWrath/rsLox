@@ -6,6 +6,7 @@ mod lox;
 mod token_type;
 mod token;
 mod scanner;
+mod parser;
 #[path = "tools/ast.rs"] mod ast;
 #[path = "tools/visit.rs"] mod visit;
 #[path = "tools/ast_printer.rs"] mod ast_printer;

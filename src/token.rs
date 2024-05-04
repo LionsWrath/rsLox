@@ -4,8 +4,8 @@ use crate::token_type::TokenType;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct Token {
-    kind: TokenType,
-    line: usize,
+    pub kind: TokenType,
+    pub line: usize,
 }
 
 impl Token {
