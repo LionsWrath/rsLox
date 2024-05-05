@@ -30,27 +30,5 @@ fn main () {
         Some(filename) => lox.run_file(&filename),
         None => lox.run_prompt(),
     }  
-
-    // let expression = Box::new(Expr::BINARY(Binary::new(
-    //     Token::new(TokenType::PLUS, 1),
-    //     Box::new(
-    //         Expr::UNARY(Unary::new(
-    //             Token::new(TokenType::MINUS, 1),
-    //             Box::new(Expr::LITERAL(Token::new(TokenType::NUMBER(45.0), 1)))
-    //         )
-    //     )),
-    //     Box::new(
-    //         Expr::GROUPING(
-    //             Grouping::new(
-    //                 Box::new(
-    //                     Expr::LITERAL(Token::new(TokenType::NUMBER(85.5), 1))
-    //                 )
-    //             )
-    //         )
-    //     )
-    // )));
-
-    // let mut ast_printer = ast_printer::AstPrinter::new();
-    // println!("{}", ast_printer.printer(&expression));
     
 }
