@@ -81,7 +81,28 @@ impl Parser {
     }
 
     fn comparison(&mut self) -> Expr {
-        unimplemented!()
+        let mut expr: Expr = self.term();
+
+        while self.match_types(vec![
+            TokenType::GREATER,
+            TokenType::GREATEREQUAL,
+            TokenType::LESS,
+            TokenType::LESSEQUAL,
+        ]) {
+            let op: Token = self.previous();
+            let rhs: Expr = self.term();
+            expr = Expr::BINARY(
+                op,
+                Box::new(expr),
+                Box::new(rhs),
+            ) 
+        }
+
+        return expr;
+    }
+
+    fn term(&mut self) -> Expr {
+        unimplemented!();
     }
 
 }
