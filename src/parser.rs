@@ -18,12 +18,12 @@ impl Parser {
         }
     }
 
-    fn peek(&self) -> Token {
-        self.tokens[self.current]
+    fn peek(&self) -> &Token {
+        &self.tokens[self.current]
     }
 
     fn previous(&self) -> Token {
-        self.tokens[self.current - 1]
+        self.tokens[self.current - 1].clone()
     }
 
     fn is_at_end(&self) -> bool {
@@ -92,9 +92,11 @@ impl Parser {
             let op: Token = self.previous();
             let rhs: Expr = self.term();
             expr = Expr::BINARY(
-                op,
-                Box::new(expr),
-                Box::new(rhs),
+                Binary::new(
+                    op,
+                    Box::new(expr),
+                    Box::new(rhs),
+                )
             ) 
         }
 
@@ -102,6 +104,90 @@ impl Parser {
     }
 
     fn term(&mut self) -> Expr {
+        let mut expr: Expr = self.factor();
+
+        while self.match_types(vec![
+            TokenType::MINUS,
+            TokenType::PLUS,
+        ]) {
+            let op: Token = self.previous();
+            let rhs: Expr = self.factor();
+            expr = Expr::BINARY(
+                Binary::new(
+                    op,
+                    Box::new(expr),
+                    Box::new(rhs),
+                )
+            )
+        }
+
+        return expr;
+    }
+
+    fn factor(&mut self) -> Expr {
+        let mut expr: Expr = self.unary();
+
+        while self.match_types(vec![
+            TokenType::SLASH,
+            TokenType::STAR,
+        ]) {
+            let op: Token = self.previous();
+            let rhs: Expr = self.unary();
+            expr = Expr::BINARY(
+                Binary::new(
+                    op,
+                    Box::new(expr),
+                    Box::new(rhs),
+                )
+            )
+        }
+
+        return expr;
+    }
+
+    fn unary(&mut self) -> Expr {
+        while self.match_types(vec![
+            TokenType::BANG,
+            TokenType::MINUS,
+        ]) {
+            let op: Token = self.previous();
+            let rhs: Expr = self.unary();
+            return Expr::UNARY(
+                Unary::new(
+                    op,
+                    Box::new(rhs),
+                )
+            )
+        }
+
+        return self.primary();
+    }
+
+    fn primary(&mut self) -> Expr {
+        if self.match_types(vec![
+            TokenType::FALSE,
+            TokenType::TRUE,
+            TokenType::NIL,
+        ]) {
+            return Expr::LITERAL(self.previous());
+        }
+
+        if self.match_types(vec![
+            TokenType::LEFTPAREN,
+        ]) {
+            let expr = self.expression();
+            self.consume(TokenType::RIGHTPAREN, "Expect ')' after expression");
+            return Expr::GROUPING(
+                Grouping::new(
+                    Box::new(expr)
+                )
+            );
+        }
+
+        return Expr::LITERAL(self.previous()); // PLACEHOLDER FOR NOW
+    }
+
+    fn consume(&mut self, tt: TokenType, message: &str) {
         unimplemented!();
     }
 
