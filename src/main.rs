@@ -1,12 +1,11 @@
 use clap::Parser;
-use token::Token;
-use token_type::TokenType;
 
 mod lox;
 mod token_type;
 mod token;
 mod scanner;
 mod parser;
+mod error;
 #[path = "tools/ast.rs"] mod ast;
 #[path = "tools/visit.rs"] mod visit;
 #[path = "tools/ast_printer.rs"] mod ast_printer;

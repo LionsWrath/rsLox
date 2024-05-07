@@ -1,6 +1,7 @@
 use crate::ast::*;
 use crate::token::Token;
 use crate::token_type::TokenType;
+use crate::error::ParseError;
 
 pub struct Parser {
     tokens: Vec<Token>,
@@ -30,10 +31,11 @@ impl Parser {
         return self.peek().kind == TokenType::EOF;
     }
 
-    fn advance(&mut self) {
+    fn advance(&mut self) -> Token {
         if !self.is_at_end() {
             self.current += 1; 
         }
+        return self.previous();
     }
 
     fn check(&self, tt: TokenType) -> bool {
@@ -176,7 +178,10 @@ impl Parser {
             TokenType::LEFTPAREN,
         ]) {
             let expr = self.expression();
-            self.consume(TokenType::RIGHTPAREN, "Expect ')' after expression");
+            match self.consume(TokenType::RIGHTPAREN, "Expect ')' after expression") {
+                Ok(_) => (),
+                Err(err) => panic!("[PARSER] {}", err)
+            };
             return Expr::GROUPING(
                 Grouping::new(
                     Box::new(expr)
@@ -187,8 +192,16 @@ impl Parser {
         return Expr::LITERAL(self.previous()); // PLACEHOLDER FOR NOW
     }
 
-    fn consume(&mut self, tt: TokenType, message: &str) {
-        unimplemented!();
+    fn consume(&mut self, tt: TokenType, message: &str) -> Result<Token, ParseError> {
+        if self.check(tt) {
+            return Ok(self.advance());
+        }
+
+        Err(ParseError::new(message.to_string(), self.peek().clone()))
+    }
+
+    fn synchronize() {
+        unimplemented!()
     }
 
 }
