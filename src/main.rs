@@ -10,8 +10,6 @@ mod error;
 #[path = "tools/visit.rs"] mod visit;
 #[path = "tools/ast_printer.rs"] mod ast_printer;
 
-use ast::*;
-
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {

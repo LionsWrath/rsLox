@@ -10,13 +10,16 @@ pub struct Parser {
 
 impl Parser {
     pub fn new(tokens: Vec<Token>) -> Self {
-    
         let current: usize = 0;
     
         Parser {
             tokens,
             current,
         }
+    }
+
+    pub fn parse(&mut self) -> Expr {
+        self.expression()
     }
 
     fn peek(&self) -> &Token {
@@ -28,14 +31,15 @@ impl Parser {
     }
 
     fn is_at_end(&self) -> bool {
-        return self.peek().kind == TokenType::EOF;
+        self.peek().kind == TokenType::EOF
     }
 
     fn advance(&mut self) -> Token {
         if !self.is_at_end() {
             self.current += 1; 
         }
-        return self.previous();
+
+        self.previous()
     }
 
     fn check(&self, tt: TokenType) -> bool {
@@ -43,7 +47,7 @@ impl Parser {
             return false;
         }
 
-        return self.peek().kind == tt;
+        self.peek().kind == tt
     }
 
     fn match_types(&mut self, types: Vec<TokenType>) -> bool {
@@ -79,7 +83,7 @@ impl Parser {
             )
         }
 
-        return expr;
+        expr
     }
 
     fn comparison(&mut self) -> Expr {
@@ -102,7 +106,7 @@ impl Parser {
             ) 
         }
 
-        return expr;
+        expr
     }
 
     fn term(&mut self) -> Expr {
@@ -123,7 +127,7 @@ impl Parser {
             )
         }
 
-        return expr;
+        expr
     }
 
     fn factor(&mut self) -> Expr {
@@ -144,7 +148,7 @@ impl Parser {
             )
         }
 
-        return expr;
+        expr
     }
 
     fn unary(&mut self) -> Expr {
@@ -162,17 +166,22 @@ impl Parser {
             )
         }
 
-        return self.primary();
+        match self.primary() {
+            Ok(parsed) => return parsed,
+            Err(err) => panic!("[PARSER] {}", err)
+        }
     }
 
-    fn primary(&mut self) -> Expr {
+    fn primary(&mut self) -> Result<Expr, ParseError> {
         if self.match_types(vec![
             TokenType::FALSE,
             TokenType::TRUE,
             TokenType::NIL,
         ]) {
-            return Expr::LITERAL(self.previous());
+            return Ok(Expr::LITERAL(self.previous()));
         }
+
+        // TODO: Fix the Literal System
 
         if self.match_types(vec![
             TokenType::LEFTPAREN,
@@ -182,14 +191,14 @@ impl Parser {
                 Ok(_) => (),
                 Err(err) => panic!("[PARSER] {}", err)
             };
-            return Expr::GROUPING(
+            return Ok(Expr::GROUPING(
                 Grouping::new(
                     Box::new(expr)
                 )
-            );
+            ));
         }
 
-        return Expr::LITERAL(self.previous()); // PLACEHOLDER FOR NOW
+        return Err(ParseError::new("Expect expression".to_string(), self.peek().clone()));
     }
 
     fn consume(&mut self, tt: TokenType, message: &str) -> Result<Token, ParseError> {
@@ -200,8 +209,25 @@ impl Parser {
         Err(ParseError::new(message.to_string(), self.peek().clone()))
     }
 
-    fn synchronize() {
-        unimplemented!()
+    fn synchronize(&mut self) {
+        self.advance();
+
+        while self.is_at_end() {
+            if self.previous().kind == TokenType::SEMICOLON { return; }
+
+            match self.peek().kind {
+                TokenType::CLASS
+                | TokenType::FUN
+                | TokenType::VAR 
+                | TokenType::FOR
+                | TokenType::IF
+                | TokenType::WHILE
+                | TokenType::PRINT
+                | TokenType::RETURN => return,
+                _ => self.advance(),
+            };
+        }
+
     }
 
 }

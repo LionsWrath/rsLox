@@ -3,8 +3,11 @@ use std::io;
 use std::path::PathBuf;
 use std::process;
 
+use crate::ast::Expr;
+use crate::parser::Parser;
 use crate::scanner::Scanner;
 use crate::token::Token;
+use crate::ast_printer::AstPrinter;
 
 #[path = "utils/utils.rs"] mod utils;
 
@@ -49,11 +52,13 @@ impl Lox {
 
     fn run(&self, source: Vec<char>) {
         let mut scanner = Scanner::new(source);
-        let tokens: &Vec<Token> = scanner.scan_tokens();
+        let mut parser = Parser::new(scanner.scan_tokens().clone());
 
-        for token in tokens {
-            println!("TOKEN: {}", token);
-        }
+        let tokens: &Vec<Token> = scanner.scan_tokens();
+        let expr: Expr = parser.parse();
+
+        let mut ast_printer = AstPrinter::new();
+        ast_printer.printer(&expr);
     }
 
     pub fn error(&mut self, line: usize, message: String) {
