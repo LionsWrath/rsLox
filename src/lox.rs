@@ -54,9 +54,7 @@ impl Lox {
         let mut scanner = Scanner::new(source);
         let mut parser = Parser::new(scanner.scan_tokens().clone());
 
-        let tokens: &Vec<Token> = scanner.scan_tokens();
         let expr: Expr = parser.parse();
-
         let mut ast_printer = AstPrinter::new();
         ast_printer.printer(&expr);
     }

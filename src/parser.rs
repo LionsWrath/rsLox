@@ -173,6 +173,7 @@ impl Parser {
     }
 
     fn primary(&mut self) -> Result<Expr, ParseError> {
+
         if self.match_types(vec![
             TokenType::FALSE,
             TokenType::TRUE,
@@ -181,7 +182,7 @@ impl Parser {
             return Ok(Expr::LITERAL(self.previous()));
         }
 
-        // TODO: Fix the Literal System
+        // TODO: Fix the literal system
 
         if self.match_types(vec![
             TokenType::LEFTPAREN,

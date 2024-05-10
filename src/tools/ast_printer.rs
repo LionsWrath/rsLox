@@ -1,5 +1,5 @@
 use crate::visit::ExprVisitor;
-use crate::ast::{Unary, Binary, Grouping, Expr};
+use crate::ast::{Unary, Binary, Grouping, Expr, Literal};
 use crate::token::Token;
 
 pub struct AstPrinter;
@@ -41,7 +41,12 @@ impl ExprVisitor<String> for AstPrinter {
         return format!("(GROUP {})", self.visit_expr(&g.expr));
     }
 
-    fn visit_literal(&mut self, t: &Token) -> String {
-       return t.get_lexeme();
+    fn visit_literal(&mut self, t: &Literal) -> String { 
+        return match t {
+            Literal::BOOL(value) => value.to_string(),
+            Literal::NUMBER(value) => value.to_string(),
+            Literal::STRING(value) => value.clone(),
+            Literal::NIL => "nil".to_string(),
+        };
     }
 }

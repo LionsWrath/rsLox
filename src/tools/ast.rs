@@ -46,8 +46,16 @@ impl Grouping {
 }
 
 #[derive(Clone, PartialEq, Debug)]
+pub enum Literal {
+    BOOL(bool),
+    NUMBER(f64),
+    STRING(String),
+    NIL,
+}
+
+#[derive(Clone, PartialEq, Debug)]
 pub enum Expr {
-    LITERAL(Token),
+    LITERAL(Literal),
     UNARY(Unary),
     BINARY(Binary),
     GROUPING(Grouping),
