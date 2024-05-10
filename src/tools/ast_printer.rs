@@ -1,6 +1,5 @@
 use crate::visit::ExprVisitor;
 use crate::ast::{Unary, Binary, Grouping, Expr, Literal};
-use crate::token::Token;
 
 pub struct AstPrinter;
 

@@ -1,5 +1,5 @@
 use crate::ast::*;
-use crate::token::Token;
+use crate::token::{Token, ValueTypes};
 use crate::token_type::TokenType;
 use crate::error::ParseError;
 
@@ -175,14 +175,24 @@ impl Parser {
     fn primary(&mut self) -> Result<Expr, ParseError> {
 
         if self.match_types(vec![
-            TokenType::FALSE,
-            TokenType::TRUE,
             TokenType::NIL,
         ]) {
-            return Ok(Expr::LITERAL(self.previous()));
+            return Ok(Expr::LITERAL(Literal::NIL))
         }
 
-        // TODO: Fix the literal system
+        if self.match_types(vec![
+            TokenType::STRING,
+            TokenType::NUMBER,
+            TokenType::FALSE,
+            TokenType::TRUE,
+        ]) {
+            return match self.previous().get_value() {
+                Some(ValueTypes::NUMBER(value)) => Ok(Expr::LITERAL(Literal::NUMBER(value))),
+                Some(ValueTypes::STRING(value)) => Ok(Expr::LITERAL(Literal::STRING(value))),
+                Some(ValueTypes::BOOL(value)) => Ok(Expr::LITERAL(Literal::BOOL(value))),
+                _ => Err(ParseError::new("Expect number, string or bool".to_string(), self.previous())),
+            }
+        }
 
         if self.match_types(vec![
             TokenType::LEFTPAREN,
@@ -213,7 +223,7 @@ impl Parser {
     fn synchronize(&mut self) {
         self.advance();
 
-        while self.is_at_end() {
+        while !self.is_at_end() {
             if self.previous().kind == TokenType::SEMICOLON { return; }
 
             match self.peek().kind {
