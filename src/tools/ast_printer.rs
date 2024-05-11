@@ -23,6 +23,14 @@ impl ExprVisitor<String> for AstPrinter {
         } 
     }
 
+    fn visit_comma(&mut self, c: &Comma) -> String {
+        return format!(
+            "({} {})",
+            self.visit_expr(&b.lhs),
+            self.visit_expr(&b.rhs)
+        )
+    }
+
     fn visit_unary(&mut self, u: &Unary) -> String {
         return format!("({} {})", u.op.get_lexeme(), self.visit_expr(&u.rhs));
     }

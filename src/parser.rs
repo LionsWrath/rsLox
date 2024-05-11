@@ -62,7 +62,23 @@ impl Parser {
     }
 
     fn expression(&mut self) -> Expr {
-        self.equality()
+        self.comma()
+    }
+
+    fn comma(&mut self) -> Expr {
+        let mut expr: Expr = self.equality();
+
+        while self.match_types(vec![
+            TokenType::COMMA,
+        ]) {
+            let rhs: Expr = self.equality();
+            expr = Expr::COMMA(
+                Box::new(expr),
+                Box::new(rhs),
+            )
+        }
+
+        expr
     }
 
     fn equality(&mut self) -> Expr {
