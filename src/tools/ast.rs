@@ -52,9 +52,11 @@ pub struct Comma {
 }
 
 impl Comma {
-    pub fn new(lhs, Box<Expr>, rhs: Box<Expr>) -> Self {
-        lhs,
-        rhs,
+    pub fn new(lhs: Box<Expr>, rhs: Box<Expr>) -> Self {
+        Comma {
+            lhs,
+            rhs,
+        }       
     }
 }
 
@@ -68,6 +70,7 @@ pub enum Literal {
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Expr {
+    COMMA(Comma),
     LITERAL(Literal),
     UNARY(Unary),
     BINARY(Binary),

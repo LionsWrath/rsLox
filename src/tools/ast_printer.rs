@@ -1,5 +1,5 @@
 use crate::visit::ExprVisitor;
-use crate::ast::{Unary, Binary, Grouping, Expr, Literal};
+use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma};
 
 pub struct AstPrinter;
 
@@ -20,14 +20,15 @@ impl ExprVisitor<String> for AstPrinter {
             Expr::BINARY(b) => self.visit_binary(&b),
             Expr::GROUPING(g) => self.visit_grouping(&g),
             Expr::LITERAL(l) => self.visit_literal(&l),
+            Expr::COMMA(c) => self.visit_comma(&c),
         } 
     }
 
     fn visit_comma(&mut self, c: &Comma) -> String {
         return format!(
             "({} {})",
-            self.visit_expr(&b.lhs),
-            self.visit_expr(&b.rhs)
+            self.visit_expr(&c.lhs),
+            self.visit_expr(&c.rhs)
         )
     }
 

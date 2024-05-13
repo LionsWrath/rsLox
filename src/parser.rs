@@ -73,8 +73,10 @@ impl Parser {
         ]) {
             let rhs: Expr = self.equality();
             expr = Expr::COMMA(
-                Box::new(expr),
-                Box::new(rhs),
+                Comma::new(
+                    Box::new(expr),
+                    Box::new(rhs),
+                )
             )
         }
 

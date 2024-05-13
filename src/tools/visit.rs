@@ -1,5 +1,4 @@
 use crate::ast::*;
-use crate::token::Token;
 
 pub trait ExprVisitor<T> {
     fn visit_expr(&mut self, e: &Expr) -> T;
