@@ -46,6 +46,21 @@ impl Grouping {
 }
 
 #[derive(Clone, PartialEq, Debug)]
+pub struct Comma {
+    pub lhs: Box<Expr>,
+    pub rhs: Box<Expr>,
+}
+
+impl Comma {
+    pub fn new(lhs: Box<Expr>, rhs: Box<Expr>) -> Self {
+        Comma {
+            lhs,
+            rhs,
+        }       
+    }
+}
+
+#[derive(Clone, PartialEq, Debug)]
 pub enum Literal {
     BOOL(bool),
     NUMBER(f64),
@@ -55,6 +70,7 @@ pub enum Literal {
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Expr {
+    COMMA(Comma),
     LITERAL(Literal),
     UNARY(Unary),
     BINARY(Binary),
