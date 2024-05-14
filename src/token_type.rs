@@ -14,6 +14,7 @@ pub enum TokenType {
     SLASH,
     STAR,
     BANG,
+    QUESTION,
     BANGEQUAL,
     EQUAL,
     EQUALEQUAL,
