@@ -61,6 +61,23 @@ impl Comma {
 }
 
 #[derive(Clone, PartialEq, Debug)]
+pub struct Ternary {
+    pub cond: Box<Expr>,
+    pub then_expr: Box<Expr>,
+    pub else_expr: Box<Expr>,
+}
+
+impl Ternary {
+    pub fn new(cond: Box<Expr>, then_expr: Box<Expr>, else_expr: Box<Expr>) -> Self {
+        Ternary {
+            cond,
+            then_expr,
+            else_expr,
+        }
+    }
+}
+
+#[derive(Clone, PartialEq, Debug)]
 pub enum Literal {
     BOOL(bool),
     NUMBER(f64),
@@ -75,4 +92,5 @@ pub enum Expr {
     UNARY(Unary),
     BINARY(Binary),
     GROUPING(Grouping),
+    TERNARY(Ternary),
 }

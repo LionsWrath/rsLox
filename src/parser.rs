@@ -62,7 +62,31 @@ impl Parser {
     }
 
     fn expression(&mut self) -> Expr {
-        self.comma()
+        self.ternary()
+    }
+
+    fn ternary(&mut self) -> Expr {
+        let mut cond: Expr = self.comma();
+
+        if self.match_types(vec![
+            TokenType::QUESTION,
+        ]) {
+            let then_expr: Expr = self.expression();
+            match self.consume(TokenType::COLON, "Expect ':' after THEN of conditional expression") {
+                Ok(_) => (),
+                Err(err) => panic!("[PARSER] {}", err)
+            };
+            let else_expr: Expr = self.ternary();
+            cond = Expr::TERNARY(
+                Ternary::new(
+                    Box::new(cond),
+                    Box::new(then_expr),
+                    Box::new(else_expr),
+                )
+            )
+        }
+
+        cond
     }
 
     fn comma(&mut self) -> Expr {
