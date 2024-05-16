@@ -1,5 +1,5 @@
 use crate::visit::ExprVisitor;
-use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma};
+use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
 
 pub struct AstPrinter;
 
@@ -21,6 +21,7 @@ impl ExprVisitor<String> for AstPrinter {
             Expr::GROUPING(g) => self.visit_grouping(&g),
             Expr::LITERAL(l) => self.visit_literal(&l),
             Expr::COMMA(c) => self.visit_comma(&c),
+            Expr::TERNARY(t) => self.visit_ternary(&t),
         } 
     }
 
@@ -30,6 +31,15 @@ impl ExprVisitor<String> for AstPrinter {
             self.visit_expr(&c.lhs),
             self.visit_expr(&c.rhs)
         )
+    }
+
+    fn visit_ternary(&mut self, t: &Ternary) -> String {
+        return format!(
+            "(TERNARY IF {} THEN {} ELSE {})",
+            self.visit_expr(&t.cond),
+            self.visit_expr(&t.then_expr),
+            self.visit_expr(&t.else_expr),
+        ) 
     }
 
     fn visit_unary(&mut self, u: &Unary) -> String {

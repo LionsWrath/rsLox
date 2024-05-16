@@ -112,6 +112,7 @@ impl Scanner {
             ';' => self.add_token(TokenType::SEMICOLON, None),
             '*' => self.add_token(TokenType::STAR, None),
             '?' => self.add_token(TokenType::QUESTION, None),
+            ':' => self.add_token(TokenType::COLON, None),
             '!' => {
                 if self.match_char('=') {
                     self.add_token(TokenType::BANGEQUAL, None)
