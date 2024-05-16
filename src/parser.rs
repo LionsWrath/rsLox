@@ -65,6 +65,10 @@ impl Parser {
         self.comma()
     }
 
+    fn ternary(&mut self) -> Expr {
+        unimplemented!()
+    }
+
     fn comma(&mut self) -> Expr {
         let mut expr: Expr = self.equality();
 
