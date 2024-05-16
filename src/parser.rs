@@ -252,6 +252,45 @@ impl Parser {
         }
 
         // ERROR Productions
+        // They are considering operations without left-hand operands, consuming
+        // the right-hand operand
+
+        if self.match_types(vec![
+            TokenType::BANGEQUAL,
+            TokenType::EQUALEQUAL,
+        ]) {
+            let err = Err(ParseError::new("Missing left-hand Operand".to_string(), self.previous()));
+            self.equality();
+            return err;
+        }
+
+        if self.match_types(vec![
+            TokenType::GREATER,
+            TokenType::GREATEREQUAL,
+            TokenType::LESS,
+            TokenType::LESSEQUAL,
+        ]) {
+            let err = Err(ParseError::new("Missing left-hand Operand".to_string(), self.previous()));
+            self.comparison();
+            return err;
+        }
+
+        if self.match_types(vec![
+            TokenType::PLUS,
+        ]) {
+            let err = Err(ParseError::new("Missing left-hand Operand".to_string(), self.previous()));
+            self.term();
+            return err;
+        }
+
+        if self.match_types(vec![
+            TokenType::SLASH,
+            TokenType::STAR,
+        ]) {
+            let err = Err(ParseError::new("Missing left-hand Operand".to_string(), self.previous()));
+            self.factor();
+            return err;
+        }
 
         return Err(ParseError::new("Expect expression".to_string(), self.peek().clone()));
     }
