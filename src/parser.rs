@@ -251,6 +251,8 @@ impl Parser {
             ));
         }
 
+        // ERROR Productions
+
         return Err(ParseError::new("Expect expression".to_string(), self.peek().clone()));
     }
 
