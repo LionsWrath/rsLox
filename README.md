@@ -1,6 +1,6 @@
 # rsLox
 
----
+![workflow](https://github.com/LionsWrath/rsLox/actions/workflows/rust.yml/badge.svg)
 
 JVM Interpreter for the lox language written in Rust.
 
