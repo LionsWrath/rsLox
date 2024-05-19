@@ -24,3 +24,7 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
            | ( "+" ) term
            | ( "/" | "*" ) factor ;
 ```
+
+This grammar has additional rules for syncronizing specific types of errors like
+missing left-operands on operations. The grammar itself is not aware that it is an
+error and needs to be correctly dealt by the parser.
