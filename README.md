@@ -2,7 +2,7 @@
 
 ![workflow](https://github.com/LionsWrath/rsLox/actions/workflows/rust.yml/badge.svg)
 
-JVM Interpreter for the lox language written in Rust.
+Interpreter for the lox language written in Rust.
 
 ## Current Grammar:
 
@@ -28,3 +28,7 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
 This grammar has additional rules for syncronizing specific types of errors like
 missing left-operands on operations. The grammar itself is not aware that it is an
 error and needs to be correctly dealt by the parser.
+
+## Tests
+
+TODO
