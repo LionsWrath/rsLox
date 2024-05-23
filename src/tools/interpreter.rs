@@ -9,4 +9,8 @@ impl ExprVisitor<Literal> for Interpreter {
         return l;
     }
 
+    fn visit_expr(&mut self, e: &Expr) -> Literal {
+        unimplemented!();
+    }
+
 }
