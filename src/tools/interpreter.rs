@@ -13,4 +13,8 @@ impl ExprVisitor<Literal> for Interpreter {
         unimplemented!();
     }
 
+    fn visit_unary(&mut self, u: &Unary) -> Literal {
+        unimplemented!();
+    }
+
 }
