@@ -17,4 +17,12 @@ impl ExprVisitor<Literal> for Interpreter {
         unimplemented!();
     }
 
+    fn visit_binary(&mut self, b: &Binary) -> Literal {
+        unimplemented!();
+    }
+
+    fn visit_grouping(&mut self, g: &Grouping) -> Literal {
+        return self.visit_expr(&g.expr);
+    }
+
 }
