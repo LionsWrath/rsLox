@@ -21,6 +21,10 @@ impl ExprVisitor<Literal> for Interpreter {
         unimplemented!();
     }
 
+    fn visit_comma(&mut self, c: &Comma) -> Literal {
+        unimplemented!();
+    }
+
     fn visit_grouping(&mut self, g: &Grouping) -> Literal {
         return self.visit_expr(&g.expr);
     }
