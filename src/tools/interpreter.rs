@@ -25,6 +25,10 @@ impl ExprVisitor<Literal> for Interpreter {
         unimplemented!();
     }
 
+    fn visit_ternary(&mut self, t: &Ternary) -> T {
+        unimplemented!();
+    }
+
     fn visit_grouping(&mut self, g: &Grouping) -> Literal {
         return self.visit_expr(&g.expr);
     }
