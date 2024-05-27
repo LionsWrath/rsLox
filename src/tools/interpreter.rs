@@ -1,5 +1,6 @@
 use crate::visit::ExprVisitor;
 use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
+use crate::token_type::TokenType;
 
 pub struct Interpreter;
 
@@ -14,7 +15,13 @@ impl ExprVisitor<Literal> for Interpreter {
     }
 
     fn visit_unary(&mut self, u: &Unary) -> Literal {
-        unimplemented!();
+        let r = self.visit_expr(&u.rhs);
+
+        match (u.op.kind, r) {
+            (TokenType::MINUS, Literal::NUMBER(val)) => return Literal(-val),
+            (TokenType::BANG, Literal::BOOL(val)) => return Literal(!val),
+            _ => panic!("TODO: fix this"),
+        }
     }
 
     fn visit_binary(&mut self, b: &Binary) -> Literal {
