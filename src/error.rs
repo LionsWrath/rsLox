@@ -1,6 +1,7 @@
 use std::fmt;
 use crate::token::Token;
 use crate::token_type::TokenType;
+use crate::ast::Literal;
 
 #[derive(Clone, Debug)]
 pub struct ParseError {
@@ -45,9 +46,9 @@ impl EvaluationError {
 
 impl fmt::Display for EvaluationError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self.literal {
+        match &self.literal {
             Literal::BOOL(val) => write!(f, "{} literal: {}", val, self.message),
-            LiteraL::NUMBER(val) => write!(f, "{} literal: {}", val, self.message),
+            Literal::NUMBER(val) => write!(f, "{} literal: {}", val, self.message),
             Literal::STRING(val) => write!(f, "{} literal: {}", val, self.message),
             Literal::NIL => write!(f, "NIL literal: {}", self.message),
         }

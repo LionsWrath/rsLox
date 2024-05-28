@@ -18,8 +18,8 @@ impl ExprVisitor<Literal> for Interpreter {
         let r = self.visit_expr(&u.rhs);
 
         match (u.op.kind, r) {
-            (TokenType::MINUS, Literal::NUMBER(val)) => return Literal(-val),
-            (TokenType::BANG, Literal::BOOL(val)) => return Literal(!val),
+            (TokenType::MINUS, Literal::NUMBER(val)) => return Literal::new(-val),
+            (TokenType::BANG, Literal::BOOL(val)) => return Literal::new(!val),
             _ => panic!("TODO: fix this"),
         }
     }
