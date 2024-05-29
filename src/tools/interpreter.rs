@@ -24,15 +24,22 @@ impl ExprVisitor<Literal> for Interpreter {
     fn visit_unary(&mut self, u: &Unary) -> Literal {
         let r = self.visit_expr(&u.rhs);
 
-        match (u.op.kind, r) {
-            (TokenType::MINUS, Literal::NUMBER(val)) => return Literal::new(-val),
-            (TokenType::BANG, Literal::BOOL(val)) => return Literal::new(!val),
+        return match (u.op.kind, r) {
+            (TokenType::MINUS, Literal::NUMBER(val)) => Literal::new(-val),
+            (TokenType::BANG, Literal::BOOL(val)) => Literal::new(!val),
+            (TokenType::BANG, Literal::NIL) => Literal::new(false),
+            (TokenType::BANG, _) => Literal::new(true),
             _ => panic!("TODO"),
         }
     }
 
     fn visit_binary(&mut self, b: &Binary) -> Literal {
-        unimplemented!();
+        let r = self.visit_expr(&b.rhs);
+        let l = self.visit_expr(&b.lhs);
+
+        return match (u.op.kind, l, r) {
+            _ => panic!("TODO"),
+        }
     }
 
     fn visit_comma(&mut self, c: &Comma) -> Literal {
