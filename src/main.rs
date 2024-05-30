@@ -9,6 +9,8 @@ mod error;
 #[path = "ast/ast.rs"] mod ast;
 #[path = "ast/visit.rs"] mod visit;
 #[path = "tools/ast_printer.rs"] mod ast_printer;
+#[path = "tools/interpreter.rs"] mod interpreter;
+
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
