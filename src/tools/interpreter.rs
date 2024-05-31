@@ -27,8 +27,8 @@ impl ExprVisitor<Literal> for Interpreter {
         return match (u.op.kind.clone(), r) {
             (TokenType::MINUS, Literal::NUMBER(val)) => Literal::NUMBER(-val),
             (TokenType::BANG, Literal::BOOL(val)) => Literal::BOOL(!val),
-            (TokenType::BANG, Literal::NIL) => Literal::BOOL(false),
-            (TokenType::BANG, _) => Literal::BOOL(true),
+            (TokenType::BANG, Literal::NIL) => Literal::BOOL(true),
+            (TokenType::BANG, _) => Literal::BOOL(false),
             _ => panic!("TODO"),
         }
     }
@@ -48,6 +48,18 @@ impl ExprVisitor<Literal> for Interpreter {
             },
             (TokenType::SLASH, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::NUMBER(lval / rval),
             (TokenType::STAR, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::NUMBER(lval * rval),
+            (TokenType::GREATER, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::BOOL(lval > rval),
+            (TokenType::GREATEREQUAL, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::BOOL(lval >= rval),
+            (TokenType::LESS, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::BOOL(lval < rval),
+            (TokenType::LESSEQUAL, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::BOOL(lval <= rval),
+            (TokenType::BANGEQUAL, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::BOOL(lval != rval),
+            (TokenType::BANGEQUAL, Literal::NIL, Literal::NIL) => Literal::BOOL(false),
+            (TokenType::BANGEQUAL, Literal::NUMBER(_), Literal::NIL) => Literal::BOOL(true),
+            (TokenType::BANGEQUAL, Literal::NIL, Literal::NUMBER(_)) => Literal::BOOL(true),
+            (TokenType::EQUALEQUAL, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::BOOL(lval == rval),
+            (TokenType::EQUALEQUAL, Literal::NIL, Literal::NIL) => Literal::BOOL(true),
+            (TokenType::EQUALEQUAL, Literal::NUMBER(_), Literal::NIL) => Literal::BOOL(false),
+            (TokenType::EQUALEQUAL, Literal::NIL, Literal::NUMBER(_)) => Literal::BOOL(false),
             _ => panic!("TODO"),
         }
     }
@@ -57,7 +69,13 @@ impl ExprVisitor<Literal> for Interpreter {
     }
 
     fn visit_ternary(&mut self, t: &Ternary) -> Literal {
-        unimplemented!();
+
+        let cond = self.visit_expr(&t.cond);
+
+        return match cond {
+            Literal::BOOL(false) | Literal::NIL => self.visit_expr(&t.else_expr),
+            _ => self.visit_expr(&t.then_expr),
+        }
     }
 
     fn visit_grouping(&mut self, g: &Grouping) -> Literal {
