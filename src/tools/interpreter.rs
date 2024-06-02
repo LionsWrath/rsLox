@@ -29,7 +29,7 @@ impl ExprVisitor<Literal> for Interpreter {
             (TokenType::BANG, Literal::BOOL(val)) => Literal::BOOL(!val),
             (TokenType::BANG, Literal::NIL) => Literal::BOOL(true),
             (TokenType::BANG, _) => Literal::BOOL(false),
-            _ => panic!("TODO"),
+            _ => panic!("Invalid operation."),
         }
     }
 
