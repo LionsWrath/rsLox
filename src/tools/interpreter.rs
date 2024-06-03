@@ -29,7 +29,7 @@ impl ExprVisitor<Literal> for Interpreter {
             (TokenType::BANG, Literal::BOOL(val)) => Literal::BOOL(!val),
             (TokenType::BANG, Literal::NIL) => Literal::BOOL(true),
             (TokenType::BANG, _) => Literal::BOOL(false),
-            _ => panic!("Invalid operation."),
+            _ => panic!("Invalid operation on unary operand."),
         }
     }
 
@@ -60,7 +60,7 @@ impl ExprVisitor<Literal> for Interpreter {
             (TokenType::EQUALEQUAL, Literal::NIL, Literal::NIL) => Literal::BOOL(true),
             (TokenType::EQUALEQUAL, Literal::NUMBER(_), Literal::NIL) => Literal::BOOL(false),
             (TokenType::EQUALEQUAL, Literal::NIL, Literal::NUMBER(_)) => Literal::BOOL(false),
-            _ => panic!("TODO"),
+            _ => panic!("Invalid operation on binary operand."),
         }
     }
 
