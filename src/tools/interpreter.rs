@@ -65,13 +65,17 @@ impl ExprVisitor<Literal> for Interpreter {
     }
 
     fn visit_comma(&mut self, c: &Comma) -> Literal {
-        unimplemented!();
+        let _ = self.visit_expr(&c.lhs);
+        let l = self.visit_expr(&c.rhs);
+
+        return l;
     }
 
     fn visit_ternary(&mut self, t: &Ternary) -> Literal {
 
         let cond = self.visit_expr(&t.cond);
 
+        // Everything else is true by default
         return match cond {
             Literal::BOOL(false) | Literal::NIL => self.visit_expr(&t.else_expr),
             _ => self.visit_expr(&t.then_expr),
