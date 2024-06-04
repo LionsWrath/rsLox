@@ -65,7 +65,7 @@ impl ExprVisitor<Literal> for Interpreter {
     }
 
     fn visit_comma(&mut self, c: &Comma) -> Literal {
-        let _ = self.visit_expr(&c.lhs);
+        let _ = self.visit_expr(&c.lhs); // ignore the leftmost expr
         let l = self.visit_expr(&c.rhs);
 
         return l;
