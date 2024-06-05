@@ -18,13 +18,13 @@ impl ExprVisitor<Literal> for Interpreter {
     }
 
     fn visit_literal(&mut self, l: &Literal) -> Literal {
-        return l.clone();
+        l.clone()
     }
 
     fn visit_unary(&mut self, u: &Unary) -> Literal {
         let r = self.visit_expr(&u.rhs);
 
-        return match (u.op.kind.clone(), r) {
+        match (u.op.kind.clone(), r) {
             (TokenType::MINUS, Literal::NUMBER(val)) => Literal::NUMBER(-val),
             (TokenType::BANG, Literal::BOOL(val)) => Literal::BOOL(!val),
             (TokenType::BANG, Literal::NIL) => Literal::BOOL(true),
@@ -38,7 +38,7 @@ impl ExprVisitor<Literal> for Interpreter {
         let l = self.visit_expr(&b.lhs); // left operand first
         let r = self.visit_expr(&b.rhs);
 
-        return match (b.op.kind.clone(), l, r) {
+        match (b.op.kind.clone(), l, r) {
             (TokenType::MINUS, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::NUMBER(lval - rval),
             (TokenType::PLUS, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Literal::NUMBER(lval + rval),
             (TokenType::PLUS, Literal::STRING(lval), Literal::STRING(rval)) => {
@@ -68,7 +68,7 @@ impl ExprVisitor<Literal> for Interpreter {
         let _ = self.visit_expr(&c.lhs); // ignore the leftmost expr
         let l = self.visit_expr(&c.rhs);
 
-        return l;
+        l
     }
 
     fn visit_ternary(&mut self, t: &Ternary) -> Literal {
@@ -76,14 +76,14 @@ impl ExprVisitor<Literal> for Interpreter {
         let cond = self.visit_expr(&t.cond);
 
         // Everything else is true by default
-        return match cond {
+        match cond {
             Literal::BOOL(false) | Literal::NIL => self.visit_expr(&t.else_expr),
             _ => self.visit_expr(&t.then_expr),
         }
     }
 
     fn visit_grouping(&mut self, g: &Grouping) -> Literal {
-        return self.visit_expr(&g.expr);
+        self.visit_expr(&g.expr)
     }
 
 }
