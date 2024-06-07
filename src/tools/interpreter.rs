@@ -1,3 +1,17 @@
+/* -------------------------------------------------------------------------------------
+*   
+*   Interpreter for the Language Lox
+*
+*   Tree-walk interpreters. It goes over each node of the AST and interpret by using
+*   the visitor pattern. The order of calling the visit functions matter and dictates
+*   the order of execution.
+*
+*   Each node can fail, resulting in a EvaluationError. For a successful execution we
+*   get a literal representing a value.
+*
+* ------------------------------------------------------------------------------------- */
+
+
 use crate::visit::ExprVisitor;
 use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
 use crate::token_type::TokenType;
@@ -47,7 +61,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
         let l = match self.visit_expr(&b.lhs) {
             Ok(lit) => lit,
             Err(e) => return Err(e)
-        }; // left operand first
+        };
 
         let r = match self.visit_expr(&b.rhs) {
             Ok(lit) => lit,
