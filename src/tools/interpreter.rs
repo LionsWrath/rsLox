@@ -49,7 +49,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             (TokenType::BANG, _) => Ok(Literal::BOOL(false)),
             (_, lit) => Err(
                 UnaryEvaluationError::new(
-                    "Invalid operation on unary operand.".to_string(),
+                    "Execution failed on Unary operand".to_string(),
                     lit
                 )
             ),
@@ -92,7 +92,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             (TokenType::EQUALEQUAL, Literal::NIL, Literal::NUMBER(_)) => Ok(Literal::BOOL(false)),
             (_, lit1, lit2) => return Err(
                 BinaryEvaluationError::new(
-                    "Invalid operation on binary operand".to_string(),
+                    "Execution failed on Binary operand".to_string(),
                     lit1,
                     lit2,
                 )
