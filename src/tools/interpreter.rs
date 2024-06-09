@@ -15,7 +15,7 @@
 use crate::visit::ExprVisitor;
 use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
 use crate::token_type::TokenType;
-use crate::error::EvaluationError;
+use crate::error::{UnaryEvaluationError, BinaryEvaluationError};
 
 pub struct Interpreter;
 
@@ -48,7 +48,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             (TokenType::BANG, Literal::NIL) => Ok(Literal::BOOL(true)),
             (TokenType::BANG, _) => Ok(Literal::BOOL(false)),
             (_, lit) => Err(
-                EvaluationError::new(
+                UnaryEvaluationError::new(
                     "Invalid operation on unary operand.".to_string(),
                     lit
                 )
@@ -91,9 +91,10 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             (TokenType::EQUALEQUAL, Literal::NUMBER(_), Literal::NIL) => Ok(Literal::BOOL(false)),
             (TokenType::EQUALEQUAL, Literal::NIL, Literal::NUMBER(_)) => Ok(Literal::BOOL(false)),
             (_, lit1, lit2) => return Err(
-                EvaluationError::new(
+                BinaryEvaluationError::new(
                     "Invalid operation on binary operand".to_string(),
                     lit1,
+                    lit2,
                 )
 
             ),
