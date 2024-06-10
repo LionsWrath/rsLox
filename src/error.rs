@@ -29,53 +29,60 @@ impl fmt::Display for ParseError {
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct UnaryEvaluationError {
-    pub message: String,
-    pub literal: Literal,
-}
-
-impl UnaryEvaluationError {
-    pub fn new(message: String, literal: Literal) -> Self {
-        UnaryEvaluationError {
-            message,
-            literal
-        }
-    }
-}
-
-impl fmt::Display for UnaryEvaluationError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match &self.literal {
-            Literal::NIL => write!(f, "NIL literal: {}", self.message),
-            Literal::_(val) => write!(f, "{} literal: {}", val, self.message),
-        }
-    }
+#[derive(Clone, PartialEq, Debug)]
+pub enum Operands {
+    UNARY(Literal),
+    BINARY(Literal, Literal),
 }
 
 #[derive(Clone, Debug)]
-pub struct BinaryEvaluationError {
+pub struct EvaluationError {
     pub message: String,
-    pub literal_left: Literal,
-    pub literal_right: Literal,
-
+    pub operands: Operands,
 }
 
-impl BinaryEvaluationError {
-    pub fn new(message: String, literal_left: Literal, literal_right: Literal) -> Self {
-        BinaryEvaluationError {
+impl EvaluationError {
+    fn new(message: String, operands: Operands) -> Self {
+        EvaluationError {
             message,
-            literal_left,
-            literal_right
+            operands,
+        }
+    }
+
+    pub fn new_unary(message: String, lit: Literal) -> Self {
+        EvaluationError::new(message, Operands::UNARY(lit))
+    }
+
+    pub fn new_binary(message: String, lit1: Literal, lit2: Literal) -> Self {
+        EvaluationError::new(message, Operands::BINARY(lit1, lit2))
+    }
+    
+    fn literal_to_message(lit: Literal) -> String {
+        match &lit {
+            Literal::NIL => "NIL".to_string(),
+            Literal::BOOL(val) => val.to_string(),
+            Literal::NUMBER(val) => val.to_string(),
+            Literal::STRING(val) => val.to_string()
         }
     }
 }
 
-impl fmt::Display for BinaryEvaluationError {
+impl fmt::Display for EvaluationError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match (&self.literal_left, &self.literal_right) {
-            (Literal::NIL, Literal::NIL) => write!(f, "NIL literal: {}", self.message),
-            (Literal::_(val_left), Literal::_(val_right)) => write!(f, "{} left literal {} right literal {}", val_left, val_right, self.message),
+        match &self.operands {
+            Operands::UNARY(lit) => write!(
+                f,
+                "{} literal - {}",
+                EvaluationError::literal_to_message(lit.clone()),
+                self.message
+            ),
+            Operands::BINARY(lit1, lit2) => write!(
+                f,
+                "{} {} literal - {}",
+                EvaluationError::literal_to_message(lit1.clone()),
+                EvaluationError::literal_to_message(lit2.clone()),
+                self.message
+            ),
         }
     }
 }
