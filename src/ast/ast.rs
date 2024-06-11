@@ -1,4 +1,5 @@
 use crate::token::Token;
+use std::fmt;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct Unary {
@@ -83,6 +84,17 @@ pub enum Literal {
     NUMBER(f64),
     STRING(String),
     NIL,
+}
+
+impl fmt::Display for Literal {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+       match self {
+           Literal::BOOL(val) => write!(f, "{}", val),
+           Literal::NUMBER(val) => write!(f, "{}", val), // Check print of this one
+           Literal::STRING(val) => write!(f, "{}", val),
+           Literal::NIL => write!(f, "NIL"),
+       }
+    }
 }
 
 #[derive(Clone, PartialEq, Debug)]

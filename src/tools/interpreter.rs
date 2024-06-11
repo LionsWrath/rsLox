@@ -19,7 +19,22 @@ use crate::error::EvaluationError;
 
 pub struct Interpreter;
 
+impl Interpreter {
+
+    pub fn new() -> Self {
+        Interpreter {}
+    }
+
+    pub fn interpret(&mut self, e: &Expr) {
+        match self.visit_expr(e) {
+            Ok(lit) => println!("{}", lit.to_string()),
+            Err(err) => println!("{}", err),
+        }
+    }
+}
+
 impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
+
 
     fn visit_expr(&mut self, e: &Expr) -> Result<Literal, EvaluationError> {
         match e {
