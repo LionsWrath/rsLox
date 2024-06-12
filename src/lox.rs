@@ -7,6 +7,7 @@ use crate::ast::Expr;
 use crate::parser::Parser;
 use crate::scanner::Scanner;
 use crate::ast_printer::AstPrinter;
+use crate::interpreter::Interpreter;
 
 #[path = "utils/utils.rs"] mod utils;
 
@@ -55,7 +56,10 @@ impl Lox {
 
         let expr: Expr = parser.parse();
 
+        let mut interpreter = Interpreter::new();
         let mut ast_printer = AstPrinter::new();
+
+        interpreter.interpret(&expr);
         println!("{}", ast_printer.printer(&expr));
     }
 
