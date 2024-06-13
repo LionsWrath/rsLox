@@ -13,13 +13,17 @@ use crate::interpreter::Interpreter;
 
 pub struct Lox {
     has_error: bool,
+    has_runtime_error: bool,
+    interpreter: Interpreter
 }
 
 impl Lox {
 
     pub fn new() -> Self {
         Lox {
-            has_error: false
+            has_error: false,
+            has_runtime_error: false,
+            interpreter: Interpreter::new()
         }
     }
 
@@ -39,6 +43,7 @@ impl Lox {
         loop {
             line.clear();
             self.has_error = false;
+            self.has_runtime_error = false;
             match stdin.read_line(&mut line) {
                 Ok(_) => {
                     let trimmed = line.trim_end();
@@ -50,17 +55,16 @@ impl Lox {
 
     }
 
-    fn run(&self, source: Vec<char>) {
+    fn run(&mut self, source: Vec<char>) {
         let mut scanner = Scanner::new(source);
         let mut parser = Parser::new(scanner.scan_tokens().clone());
 
         let expr: Expr = parser.parse();
 
-        let mut interpreter = Interpreter::new();
         let mut ast_printer = AstPrinter::new();
-
-        interpreter.interpret(&expr);
         println!("{}", ast_printer.printer(&expr));
+
+        self.interpreter.interpret(&expr);
     }
 
     pub fn error(&mut self, line: usize, message: String) {
