@@ -27,7 +27,7 @@ impl Lox {
         }
     }
 
-    pub fn run_file(&self, filename: &PathBuf) {
+    pub fn run_file(&mut self, filename: &PathBuf) {
         self.run(utils::read_file(filename));
 
         if self.has_error {
