@@ -91,6 +91,16 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
                 appended.push_str(&rval);
                 Ok(Literal::STRING(appended))
             },
+            (TokenType::PLUS, Literal::STRING(lval), Literal::NUMBER(rval)) => {
+                let mut appended = lval.clone();
+                appended.push_str(&rval.to_string());
+                Ok(Literal::STRING(appended))
+            },
+            (TokenType::PLUS, Literal::NUMBER(lval), Literal::STRING(rval)) => {
+                let mut appended = lval.to_string();
+                appended.push_str(&rval);
+                Ok(Literal::STRING(appended))
+            },
             (TokenType::SLASH, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::NUMBER(lval / rval)),
             (TokenType::STAR, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::NUMBER(lval * rval)),
             (TokenType::GREATER, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::BOOL(lval > rval)),
