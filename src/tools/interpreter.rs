@@ -101,7 +101,19 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
                 appended.push_str(&rval);
                 Ok(Literal::STRING(appended))
             },
-            (TokenType::SLASH, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::NUMBER(lval / rval)),
+            (TokenType::SLASH, Literal::NUMBER(lval), Literal::NUMBER(rval)) => {
+                
+                if rval == 0 {
+                    Err(
+                        EvaluationError::new_binary(
+                            "Division by zero.".to_string(),
+                            lit1,
+                            lit2,
+                        )
+                    )
+                }
+                Ok(Literal::NUMBER(lval / rval))
+            },
             (TokenType::STAR, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::NUMBER(lval * rval)),
             (TokenType::GREATER, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::BOOL(lval > rval)),
             (TokenType::GREATEREQUAL, Literal::NUMBER(lval), Literal::NUMBER(rval)) => Ok(Literal::BOOL(lval >= rval)),
