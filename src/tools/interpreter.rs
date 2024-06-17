@@ -107,8 +107,8 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
                     return Err(
                         EvaluationError::new_binary(
                             "Division by zero.".to_string(),
-                            lit1,
-                            lit2,
+                            Literal::NUMBER(lval),
+                            LiteraL::NUMBER(rval),
                         )
                     )
                 }
