@@ -9,6 +9,11 @@
 *   Each node can fail, resulting in a EvaluationError. For a successful execution we
 *   get a literal representing a value.
 *
+*   Some Considerations:
+*       - Bools: Only False and NIL should evaluate to false, all other combinations are true;
+*       - Sum on String: Concatenates the values, convert number to string;
+*   
+*
 * ------------------------------------------------------------------------------------- */
 
 
@@ -106,7 +111,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
                 if rval == 0.0 {
                     return Err(
                         EvaluationError::new_binary(
-                            "Division by zero.".to_string(),
+                            "Division by zero".to_string(),
                             Literal::NUMBER(lval),
                             Literal::NUMBER(rval),
                         )
@@ -159,7 +164,6 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             Err(e) => return Err(e)
         };
 
-        // Everything else is true by default
         match cond {
             Literal::BOOL(false) | Literal::NIL => self.visit_expr(&t.else_expr),
             _ => self.visit_expr(&t.then_expr),
