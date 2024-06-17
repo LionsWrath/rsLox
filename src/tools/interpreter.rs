@@ -103,8 +103,8 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             },
             (TokenType::SLASH, Literal::NUMBER(lval), Literal::NUMBER(rval)) => {
                 
-                if rval == 0 {
-                    Err(
+                if rval == 0.0 {
+                    return Err(
                         EvaluationError::new_binary(
                             "Division by zero.".to_string(),
                             lit1,
