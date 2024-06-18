@@ -4,7 +4,7 @@
 
 Interpreter for the lox language written in Rust.
 
-## Current Grammar:
+## Grammar:
 
 ```
 expression → ternary
@@ -27,7 +27,19 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
 
 This grammar has additional rules for syncronizing specific types of errors like
 missing left-operands on operations. The grammar itself is not aware that it is an
-error and needs to be correctly dealt by the parser.
+error and needs to be correctly dealt by the parser. This is basically a calculator.
+
+### Statements Grammar
+
+```
+program   → statement* EOF;
+statement → exprStmt | printStmt;
+exprStmt  → expression ";";
+printStmt → "print" expression ";";
+
+```
+
+Additional grammar for statements. The `program` will now be te new beginning of the AST;
 
 ## Tests
 
