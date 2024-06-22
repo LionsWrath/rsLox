@@ -3,7 +3,7 @@ use std::io;
 use std::path::PathBuf;
 use std::process;
 
-use crate::ast::Expr;
+use crate::ast_expr::Expr;
 use crate::parser::Parser;
 use crate::scanner::Scanner;
 use crate::ast_printer::AstPrinter;

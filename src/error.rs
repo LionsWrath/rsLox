@@ -1,7 +1,7 @@
 use std::fmt;
 use crate::token::Token;
 use crate::token_type::TokenType;
-use crate::ast::Literal;
+use crate::ast_expr::Literal;
 
 #[derive(Clone, Debug)]
 pub struct ParseError {

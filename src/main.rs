@@ -6,8 +6,10 @@ mod token;
 mod scanner;
 mod parser;
 mod error;
-#[path = "ast/ast.rs"] mod ast;
-#[path = "ast/visit.rs"] mod visit;
+#[path = "ast/ast_expr.rs"] mod ast_expr;
+#[path = "ast/visit_expr.rs"] mod visit_expr;
+#[path = "ast/ast_stmt.rs"] mod ast_stmt;
+#[path = "ast/visit_stmt.rs"] mod visit_stmt;
 #[path = "tools/ast_printer.rs"] mod ast_printer;
 #[path = "tools/interpreter.rs"] mod interpreter;
 
