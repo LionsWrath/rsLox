@@ -80,7 +80,7 @@ impl Parser {
 
     fn print_statement(&mut self) -> Stmt {
         let expr: Expr = self.expression();
-        self.consume(TokenType::SEMICOLON, "Expect ';' after value.");
+        let _ = self.consume(TokenType::SEMICOLON, "Expect ';' after value.");
         
         Stmt::PRINT(
             Print::new(
@@ -91,7 +91,7 @@ impl Parser {
 
     fn expression_statement(&mut self) -> Stmt {
         let expr: Expr = self.expression();
-        self.consume(TokenType::SEMICOLON, "Expect ';' after value.");
+        let _ = self.consume(TokenType::SEMICOLON, "Expect ';' after value.");
 
         Stmt::EXPRESSION(
             Expression::new(

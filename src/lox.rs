@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::process;
 
 use crate::ast_expr::Expr;
+use crate::ast_stmt::Stmt;
 use crate::parser::Parser;
 use crate::scanner::Scanner;
 use crate::ast_printer::AstPrinter;
@@ -59,12 +60,12 @@ impl Lox {
         let mut scanner = Scanner::new(source);
         let mut parser = Parser::new(scanner.scan_tokens().clone());
 
-        let expr: Expr = parser.parse();
+        let _: Vec<Stmt> = parser.parse();
 
-        let mut ast_printer = AstPrinter::new();
-        println!("{}", ast_printer.printer(&expr));
+        //let mut ast_printer = AstPrinter::new();
+        //println!("{}", ast_printer.printer(&expr));
 
-        self.interpreter.interpret(&expr);
+        //self.interpreter.interpret(&expr);
     }
 
     pub fn error(&mut self, line: usize, message: String) {

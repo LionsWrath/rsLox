@@ -1,5 +1,4 @@
-use crate::ast::*;
-use crate::token::Token;
+use crate::ast_stmt::*;
 
 pub trait StmtVisitor<T> {
     fn visit_stmt(&mut self, s: &Stmt) -> T;

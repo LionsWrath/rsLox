@@ -1,5 +1,5 @@
-use crate::visit::ExprVisitor;
-use crate::ast::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
+use crate::visit_expr::ExprVisitor;
+use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
 
 pub struct AstPrinter;
 
