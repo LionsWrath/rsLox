@@ -1,4 +1,4 @@
-use crate::ast_stmt::*;
+use crate::ast_stmt::{Stmt, Expression, Print};
 
 pub trait StmtVisitor<T> {
     fn visit_stmt(&mut self, s: &Stmt) -> T;

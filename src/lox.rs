@@ -60,10 +60,12 @@ impl Lox {
         let mut scanner = Scanner::new(source);
         let mut parser = Parser::new(scanner.scan_tokens().clone());
 
-        let _: Vec<Stmt> = parser.parse();
+        let statements: Vec<Stmt> = parser.parse();
 
-        //let mut ast_printer = AstPrinter::new();
-        //println!("{}", ast_printer.printer(&expr));
+        let mut ast_printer = AstPrinter::new();
+        for stmt in &statements {
+            println!("{}", ast_printer.printer(stmt));
+        }
 
         //self.interpreter.interpret(&expr);
     }
