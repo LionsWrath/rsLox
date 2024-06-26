@@ -3,7 +3,6 @@ use std::io;
 use std::path::PathBuf;
 use std::process;
 
-use crate::ast_expr::Expr;
 use crate::ast_stmt::Stmt;
 use crate::parser::Parser;
 use crate::scanner::Scanner;
@@ -64,8 +63,20 @@ impl Lox {
         let mut ast_printer = AstPrinter::new();
 
         for stmt in &statements {
+
             println!("{}", ast_printer.printer(stmt));
-            self.interpreter.interpret(stmt)
+            
+            if self.has_error {
+                return 
+            }
+
+            match self.interpreter.interpret(stmt) {
+                Ok(lit) => println!("{}", lit.to_string()),
+                Err(err) => {
+                    self.has_error = true;
+                    println!("{}", err);
+                },
+            }
         }
     }
 

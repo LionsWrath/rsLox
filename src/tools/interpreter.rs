@@ -32,11 +32,8 @@ impl Interpreter {
         Interpreter {}
     }
 
-    pub fn interpret(&mut self, s: &Stmt) {
-        match self.visit_stmt(s) {
-            Ok(lit) => println!("{}", lit.to_string()),
-            Err(err) => println!("{}", err),
-        }
+    pub fn interpret(&mut self, s: &Stmt) -> Result<Literal, EvaluationError> {
+        return self.visit_stmt(s);
     }
 }
 
