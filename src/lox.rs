@@ -61,22 +61,12 @@ impl Lox {
         let mut parser = Parser::new(scanner.scan_tokens().clone());
 
         let statements: Vec<Stmt> = parser.parse();
-
         let mut ast_printer = AstPrinter::new();
+
         for stmt in &statements {
             println!("{}", ast_printer.printer(stmt));
+            self.interpreter.interpret(stmt)
         }
-
-        //self.interpreter.interpret(&expr);
-    }
-
-    pub fn error(&mut self, line: usize, message: String) {
-        self.log(line, String::new(), message);
-        self.has_error = true;
-    }
-
-    pub fn log(&self, line: usize, doko: String, message: String) {
-        println!("[line {line}] Error {doko}: {message}");
     }
 
 }
