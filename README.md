@@ -41,6 +41,21 @@ printStmt → "print" expression ";";
 
 Additional grammar for statements. The `program` will now be te new beginning of the AST;
 
+### Variables Grammar
+
+
+```
+program   → declaration* EOF;
+declaration → varDecl | statement;
+varDecl  → "var" identifier ("=" expression)? ";";
+statement → exprStmt | printStmt;
+exprStmt  → expression ";";
+printStmt → "print" expression ";";
+
+```
+
+Incremental changes for variable declaration;
+
 ## Tests
 
 TODO
