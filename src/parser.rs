@@ -23,7 +23,7 @@ impl Parser {
         let mut statements = Vec::new();
 
         while !self.is_at_end() {
-            statements.push(self.statement());
+            statements.push(self.declaration());
         }
 
         return statements;
@@ -66,6 +66,21 @@ impl Parser {
         }
 
         false
+    }
+
+    // Sync here
+    fn declaration(&mut self) -> Stmt {
+        if self.match_types(vec![
+            TokenType::VAR
+        ]) {
+            return self.var_declaration();
+        }
+
+        self.statement()
+    }
+
+    fn var_declaration(&mut self) -> Stmt {
+        unimplemented!();
     }
 
     fn statement(&mut self) -> Stmt {
