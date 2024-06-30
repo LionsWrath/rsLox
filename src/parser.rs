@@ -83,34 +83,47 @@ impl Parser {
         unimplemented!();
     }
 
+    // Barrier for errors
     fn statement(&mut self) -> Stmt {
         if self.match_types(vec![
             TokenType::PRINT
         ]) {
-            return self.print_statement();
+            return self.print_statement().unwrap();
         }
 
-        self.expression_statement()
+        self.expression_statement().unwrap()
     }
 
-    fn print_statement(&mut self) -> Stmt {
+    fn print_statement(&mut self) -> Result<Stmt, ParseError>  {
         let expr: Expr = self.expression();
-        let _ = self.consume(TokenType::SEMICOLON, "Expect ';' after value.");
+
+        match self.consume(TokenType::SEMICOLON, "Expect ';' after value.") {
+            Ok(_) => (),
+            Err(err) => return Err(err),
+        }; 
         
-        Stmt::PRINT(
-            Print::new(
-                Box::new(expr)
+        Ok(
+            Stmt::PRINT(
+                Print::new(
+                    Box::new(expr)
+                )
             )
         )
     }
 
-    fn expression_statement(&mut self) -> Stmt {
+    fn expression_statement(&mut self) -> Result<Stmt, ParseError> {
         let expr: Expr = self.expression();
-        let _ = self.consume(TokenType::SEMICOLON, "Expect ';' after value.");
 
-        Stmt::EXPRESSION(
-            Expression::new(
-                Box::new(expr)
+        match self.consume(TokenType::SEMICOLON, "Expect ';' after value.") {
+            Ok(_) => (),
+            Err(err) => return Err(err),
+        }; 
+        
+        Ok(
+            Stmt::EXPRESSION(
+                Expression::new(
+                    Box::new(expr)
+                )
             )
         )
     }
