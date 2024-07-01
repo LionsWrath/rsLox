@@ -69,17 +69,41 @@ impl Parser {
     }
 
     // Sync here
-    fn declaration(&mut self) -> Stmt {
+    fn declaration(&mut self) -> Result<Stmt, ParseError> {
         if self.match_types(vec![
             TokenType::VAR
         ]) {
-            return self.var_declaration();
+            match self.var_declaration() {
+                Ok(stmt) => return Ok(stmt),
+                Err(err) =>  {
+                    self.synchronize();
+                    return Err(err);
+                }
+            };
         }
 
-        self.statement()
+        Ok(self.statement())
     }
 
-    fn var_declaration(&mut self) -> Stmt {
+    fn var_declaration(&mut self) -> Result<Stmt, ParseError> {
+        let token: Token = match self.consume(TokenType::IDENTIFIER, "Expect variable name") {
+            Ok(t) => t,
+            Err(err) => return Err(err),
+        };
+
+        let initiliazer: Expr;
+
+        if self.match_types(vec![
+            TokenType::EQUAL
+        ]) {
+            initiliazer = self.expression();
+        }
+
+        match self.consume(TokenType::SEMICOLON, "Expect ';' after value.") {
+            Ok(_) => (),
+            Err(err) => return Err(err),
+        };
+
         unimplemented!();
     }
 
