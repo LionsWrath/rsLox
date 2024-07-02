@@ -68,7 +68,6 @@ impl Parser {
         false
     }
 
-    // Sync here
     fn declaration(&mut self) -> Result<Stmt, ParseError> {
         if self.match_types(vec![
             TokenType::VAR
