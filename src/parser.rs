@@ -23,7 +23,10 @@ impl Parser {
         let mut statements = Vec::new();
 
         while !self.is_at_end() {
-            statements.push(self.declaration());
+            match self.declaration() {
+                Ok(stmt) => statements.push(stmt),
+                Err(err) => println!("{}", err)
+            }
         }
 
         return statements;
@@ -90,6 +93,7 @@ impl Parser {
             Err(err) => return Err(err),
         };
 
+        // This is bad, check how to improve
         let initiliazer: Expr;
 
         if self.match_types(vec![
