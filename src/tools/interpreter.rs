@@ -19,8 +19,8 @@
 
 use crate::visit_expr::ExprVisitor;
 use crate::visit_stmt::StmtVisitor;
-use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
-use crate::ast_stmt::{Expression, Stmt, Print};
+use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable};
+use crate::ast_stmt::{Expression, Stmt, Print, Var};
 use crate::token_type::TokenType;
 use crate::error::EvaluationError;
 
@@ -48,6 +48,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
             Expr::LITERAL(l) => self.visit_literal(&l),
             Expr::COMMA(c) => self.visit_comma(&c),
             Expr::TERNARY(t) => self.visit_ternary(&t),
+            Expr::VARIABLE(v) => self.visit_variable(&v),
         } 
     }
 
@@ -173,13 +174,17 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
         self.visit_expr(&g.expr)
     }
 
+    fn visit_variable(&mut self, v: &Variable) -> Result<Literal, EvaluationError> {
+        unimplemented!() 
+    }
 }
 
 impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
     fn visit_stmt(&mut self, s: &Stmt) -> Result<Literal, EvaluationError> {
         return match s {
-            Stmt::EXPRESSION(e) => self.visit_expression(e),
-            Stmt::PRINT(p) => self.visit_print(p),
+            Stmt::EXPRESSION(e) => self.visit_expression(&e),
+            Stmt::PRINT(p) => self.visit_print(&p),
+            Stmt::VAR(v) => self.visit_var(&v)
         }        
     }
 
@@ -195,5 +200,9 @@ impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
             },
             Err(e) => return Err(e),
         }
+    }
+
+    fn visit_var(&mut self, v: &Var) -> Result<Literal, EvaluationError> {
+        unimplemented!() 
     }
 }

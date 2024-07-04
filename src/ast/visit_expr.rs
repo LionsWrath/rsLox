@@ -1,4 +1,4 @@
-use crate::ast_expr::{ Expr, Comma, Ternary, Literal, Unary, Binary, Grouping };
+use crate::ast_expr::{Expr, Comma, Ternary, Literal, Unary, Binary, Grouping, Variable};
 
 pub trait ExprVisitor<T> {
     fn visit_expr(&mut self, e: &Expr) -> T;
@@ -8,4 +8,5 @@ pub trait ExprVisitor<T> {
     fn visit_unary(&mut self, u: &Unary) -> T;
     fn visit_binary(&mut self, b: &Binary) -> T;
     fn visit_grouping(&mut self, g: &Grouping) -> T;
+    fn visit_variable(&mut self, v: &Variable) -> T;
 }

@@ -79,6 +79,19 @@ impl Ternary {
 }
 
 #[derive(Clone, PartialEq, Debug)]
+pub struct Variable {
+    pub name: Token,
+}
+
+impl Variable {
+   pub fn new(name: Token) -> Self {
+        Variable {
+            name,
+        }
+    }
+}
+
+#[derive(Clone, PartialEq, Debug)]
 pub enum Literal {
     BOOL(bool),
     NUMBER(f64),
@@ -100,9 +113,10 @@ impl fmt::Display for Literal {
 #[derive(Clone, PartialEq, Debug)]
 pub enum Expr {
     COMMA(Comma),
-    LITERAL(Literal),
-    UNARY(Unary),
+    TERNARY(Ternary),
     BINARY(Binary),
     GROUPING(Grouping),
-    TERNARY(Ternary),
+    LITERAL(Literal),
+    UNARY(Unary),
+    VARIABLE(Variable),
 }

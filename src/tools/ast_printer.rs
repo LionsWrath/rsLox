@@ -1,7 +1,7 @@
 use crate::visit_expr::ExprVisitor;
-use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary};
+use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable};
 use crate::visit_stmt::StmtVisitor;
-use crate::ast_stmt::{Stmt, Expression, Print};
+use crate::ast_stmt::{Stmt, Expression, Print, Var};
 
 pub struct AstPrinter;
 
@@ -24,6 +24,7 @@ impl ExprVisitor<String> for AstPrinter {
             Expr::LITERAL(l) => self.visit_literal(&l),
             Expr::COMMA(c) => self.visit_comma(&c),
             Expr::TERNARY(t) => self.visit_ternary(&t),
+            Expr::VARIABLE(v) => self.visit_variable(&v),
         } 
     }
 
@@ -69,6 +70,10 @@ impl ExprVisitor<String> for AstPrinter {
             Literal::NIL => "nil".to_string(),
         };
     }
+
+    fn visit_variable(&mut self, v: &Variable) -> String {
+        unimplemented!()
+    }
 }
 
 impl StmtVisitor<String> for AstPrinter {
@@ -76,6 +81,7 @@ impl StmtVisitor<String> for AstPrinter {
         return match s {
             Stmt::PRINT(e) => self.visit_print(&e),
             Stmt::EXPRESSION(p) => self.visit_expression(&p),
+            Stmt::VAR(v) => self.visit_var(&v),
         }
     }
 
@@ -91,5 +97,9 @@ impl StmtVisitor<String> for AstPrinter {
             "(Print {})",
             self.visit_expr(&p.expr) 
         )
+    }
+
+    fn visit_var(&mut self, v: &Var) -> String {
+        unimplemented!() 
     }
 }
