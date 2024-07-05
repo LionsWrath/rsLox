@@ -84,7 +84,7 @@ impl Parser {
             };
         }
 
-        Ok(self.statement())
+        self.statement()
     }
 
     fn var_declaration(&mut self) -> Result<Stmt, ParseError> {
@@ -93,13 +93,12 @@ impl Parser {
             Err(err) => return Err(err),
         };
 
-        // This is bad, check how to improve
-        let initiliazer: Expr;
+        let mut initiliazer: Option<Expr> = None;
 
         if self.match_types(vec![
             TokenType::EQUAL
         ]) {
-            initiliazer = self.expression();
+            initiliazer = Some(self.expression());
         }
 
         match self.consume(TokenType::SEMICOLON, "Expect ';' after value.") {
@@ -107,18 +106,24 @@ impl Parser {
             Err(err) => return Err(err),
         };
 
-        unimplemented!();
+        Ok(
+            Stmt::VAR(
+                Var::new(
+                    token,
+                    Box::new(initiliazer)
+                )
+            )
+        )
     }
 
-    // Barrier for errors
-    fn statement(&mut self) -> Stmt {
+    fn statement(&mut self) -> Result<Stmt, ParseError> {
         if self.match_types(vec![
             TokenType::PRINT
         ]) {
-            return self.print_statement().unwrap();
+            return self.print_statement();
         }
 
-        self.expression_statement().unwrap()
+        self.expression_statement()
     }
 
     fn print_statement(&mut self) -> Result<Stmt, ParseError>  {
@@ -328,6 +333,12 @@ impl Parser {
                 Some(ValueTypes::BOOL(value)) => Ok(Expr::LITERAL(Literal::BOOL(value))),
                 _ => Err(ParseError::new("Expect number, string or bool".to_string(), self.previous())),
             }
+        }
+
+        if self.match_types(vec![
+            TokenType::IDENTIFIER
+        ]) {
+            return Ok(Expr::VARIABLE(Variable::new(self.previous())))
         }
 
         if self.match_types(vec![
