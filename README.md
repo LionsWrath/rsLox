@@ -58,4 +58,4 @@ Incremental changes for variable declaration;
 
 ## Tests
 
-TODO
+TODO (will add tests for each part later)
