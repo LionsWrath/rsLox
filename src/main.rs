@@ -6,6 +6,7 @@ mod token;
 mod scanner;
 mod parser;
 mod error;
+mod environment;
 #[path = "ast/ast_expr.rs"] mod ast_expr;
 #[path = "ast/visit_expr.rs"] mod visit_expr;
 #[path = "ast/ast_stmt.rs"] mod ast_stmt;
