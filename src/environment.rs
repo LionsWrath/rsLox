@@ -14,4 +14,8 @@ impl Environment {
             values
         }
     }
+
+    pub fn define(&mut self, name: String, value: Literal) {
+        self.values.insert(name, value);
+    }
 }
