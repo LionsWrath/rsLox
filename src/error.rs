@@ -86,3 +86,27 @@ impl fmt::Display for EvaluationError {
         }
     }
 }
+
+
+#[derive(Clone, Debug)]
+pub struct RuntimeError {
+    pub message: String,
+}
+
+impl RuntimeError {
+    pub fn new(message: String) -> Self {
+        RuntimeError {
+            message,
+        }
+    }
+}
+
+impl fmt::Display for RuntimeError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.message
+        )
+    }
+}
