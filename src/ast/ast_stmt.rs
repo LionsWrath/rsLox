@@ -37,11 +37,11 @@ impl Print {
 #[derive(Clone, PartialEq, Debug)]
 pub struct Var {
     pub name: Token,
-    pub initializer: Box<Option<Expr>>,
+    pub initializer: Option<Box<Expr>>,
 }
 
 impl Var {
-   pub fn new(name: Token, initializer: Box<Option<Expr>>) -> Self {
+   pub fn new(name: Token, initializer: Option<Box<Expr>>) -> Self {
         Var {
             name,
             initializer,

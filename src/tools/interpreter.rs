@@ -17,6 +17,7 @@
 * ------------------------------------------------------------------------------------- */
 
 
+use crate::environment::Environment;
 use crate::visit_expr::ExprVisitor;
 use crate::visit_stmt::StmtVisitor;
 use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable};
@@ -24,12 +25,19 @@ use crate::ast_stmt::{Expression, Stmt, Print, Var};
 use crate::token_type::TokenType;
 use crate::error::EvaluationError;
 
-pub struct Interpreter;
+pub struct Interpreter {
+    environment: Environment,
+}
 
 impl Interpreter {
 
     pub fn new() -> Self {
-        Interpreter {}
+        
+        let environment = Environment::new();
+
+        Interpreter {
+            environment
+        }
     }
 
     pub fn interpret(&mut self, s: &Stmt) -> Result<Literal, EvaluationError> {
@@ -202,7 +210,22 @@ impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
         }
     }
 
+    // This unwrap is still no good enough, improve later
     fn visit_var(&mut self, v: &Var) -> Result<Literal, EvaluationError> {
-        unimplemented!() 
+
+        match v.initializer {
+                Some(expr) => {
+                    self.environment.define(
+                        v.name.value.unwrap(),
+                        match self.visit_expr(&expr) {
+                            Ok(value) => value,
+                            Err(err) => panic!(""),
+                        }
+                    )
+                },
+                None => self.environment.define(v.name.value.unwrap(), Literal::NIL),
+        }
+
+        return Ok(Literal::NIL);
     }
 }
