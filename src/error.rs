@@ -33,6 +33,7 @@ impl fmt::Display for ParseError {
 pub enum Operands {
     UNARY(Literal),
     BINARY(Literal, Literal),
+    VAR,
 }
 
 #[derive(Clone, Debug)]
@@ -55,6 +56,10 @@ impl EvaluationError {
 
     pub fn new_binary(message: String, lit1: Literal, lit2: Literal) -> Self {
         EvaluationError::new(message, Operands::BINARY(lit1, lit2))
+    }
+
+    pub fn new_var(message: String) -> Self {
+        EvaluationError::new(message, Operands::VAR)
     }
     
     fn literal_to_message(lit: Literal) -> String {
@@ -83,6 +88,11 @@ impl fmt::Display for EvaluationError {
                 EvaluationError::literal_to_message(lit2.clone()),
                 self.message
             ),
+            Operands::VAR => write!(
+                f,
+                "VAR - {}",
+                self.message
+            ) 
         }
     }
 }

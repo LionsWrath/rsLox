@@ -213,17 +213,27 @@ impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
     // This unwrap is still no good enough, improve later
     fn visit_var(&mut self, v: &Var) -> Result<Literal, EvaluationError> {
 
-        match v.initializer {
+        let name = match v.name.value {
+            Some(ref n) => n.clone(),
+            None => return Err(
+                EvaluationError::new_var("No name in token defined for variable".to_string())
+            ),
+        };
+
+        match &v.initializer {
                 Some(expr) => {
+                    let value = match self.visit_expr(&expr) {
+                        Ok(v) => v,
+                        Err(err) => return Err(err),
+                    };
+
+
                     self.environment.define(
-                        v.name.value.unwrap(),
-                        match self.visit_expr(&expr) {
-                            Ok(value) => value,
-                            Err(err) => panic!(""),
-                        }
+                        name,
+                        value
                     )
                 },
-                None => self.environment.define(v.name.value.unwrap(), Literal::NIL),
+                None => self.environment.define(name, Literal::NIL),
         }
 
         return Ok(Literal::NIL);

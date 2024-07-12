@@ -106,14 +106,19 @@ impl Parser {
             Err(err) => return Err(err),
         };
 
-        Ok(
-            Stmt::VAR(
-                Var::new(
-                    token,
-                    Box::new(initiliazer)
+        match initiliazer {
+            Some(expr) => Ok(
+                Stmt::VAR(
+                    Var::new(token, Some(Box::new(expr)))
+                )
+            ),
+            None => Ok(
+                Stmt::VAR(
+                    Var::new(token, None)
                 )
             )
-        )
+        }
+
     }
 
     fn statement(&mut self) -> Result<Stmt, ParseError> {
