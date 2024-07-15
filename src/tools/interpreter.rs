@@ -210,7 +210,6 @@ impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
         }
     }
 
-    // This unwrap is still no good enough, improve later
     fn visit_var(&mut self, v: &Var) -> Result<Literal, EvaluationError> {
 
         let name = match v.name.value {
