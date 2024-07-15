@@ -41,8 +41,7 @@ printStmt → "print" expression ";";
 
 Additional grammar for statements. The `program` will now be te new beginning of the AST;
 
-### Variables Grammar (IN PROGRESS)
-
+### Variables Grammar (IN PROGRESS - ONLY GLOBALS FOR NOW)
 
 ```
 program   → declaration* EOF;
