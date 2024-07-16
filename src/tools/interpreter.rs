@@ -183,7 +183,15 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
     }
 
     fn visit_variable(&mut self, v: &Variable) -> Result<Literal, EvaluationError> {
-        unimplemented!() 
+
+        let name = match v.name.value {
+            Some(ref n) => n.clone(),
+            None => return Err(
+                EvaluationError::new_var("No name in token defined for variable".to_string())
+            ),
+        };
+
+        Ok(self.environment.get(&name).clone())
     }
 }
 

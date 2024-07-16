@@ -20,11 +20,11 @@ impl Environment {
         self.values.insert(name, value);
     }
 
-    pub fn get(&mut self, name: &String) -> Result<&Literal, RuntimeError> {
+    pub fn get(&mut self, name: &String) -> &Literal {
         if self.values.contains_key(name) {
-            return Ok(&self.values[name]);
+            return &self.values[name];
         }
 
-        Err(RuntimeError::new(format!("Undefined variable {}", name.to_string())))
+        panic!("Undefined variable {}", name);
     }
 }
