@@ -41,7 +41,7 @@ printStmt → "print" expression ";";
 
 Additional grammar for statements. The `program` will now be te new beginning of the AST;
 
-### Variables Grammar (IN PROGRESS - ONLY GLOBALS FOR NOW)
+### Variable Declaration Grammar (Global Variable)
 
 ```
 program   → declaration* EOF;
@@ -54,6 +54,15 @@ printStmt → "print" expression ";";
 ```
 
 Incremental changes for variable declaration;
+
+## Variable Assignment Grammar
+
+```
+expression → assignment;
+assignment → IDENTIFIER "=" assignment | equality
+```
+
+Beginning of variable assignment. Declaration is different for mutation of the variable.
 
 ## Tests
 
