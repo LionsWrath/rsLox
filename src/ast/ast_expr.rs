@@ -34,6 +34,21 @@ impl Binary {
 }
 
 #[derive(Clone, PartialEq, Debug)]
+pub struct Assign {
+    pub name: Token,
+    pub value: Box<Expr>,
+}
+
+impl Assign {
+   pub fn new(name: Token, value: Box<Expr>) -> Self {
+        Assign {
+            name,
+            value,
+        }
+    }
+}
+
+#[derive(Clone, PartialEq, Debug)]
 pub struct Grouping {
     pub expr: Box<Expr>,
 }
@@ -114,6 +129,7 @@ impl fmt::Display for Literal {
 pub enum Expr {
     COMMA(Comma),
     TERNARY(Ternary),
+    ASSIGN(Assign),
     BINARY(Binary),
     GROUPING(Grouping),
     LITERAL(Literal),
