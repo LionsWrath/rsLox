@@ -52,6 +52,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
         match e {
             Expr::UNARY(u) => self.visit_unary(&u),
             Expr::BINARY(b) => self.visit_binary(&b),
+            Expr::ASSIGN(a) => self.visit_assign(&a),
             Expr::GROUPING(g) => self.visit_grouping(&g),
             Expr::LITERAL(l) => self.visit_literal(&l),
             Expr::COMMA(c) => self.visit_comma(&c),
@@ -192,6 +193,10 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
         };
 
         Ok(self.environment.get(&name).clone())
+    }
+
+    fn visit_assign(&mut self, a: &crate::ast_expr::Assign) -> Result<Literal, EvaluationError> {
+        unimplemented!()
     }
 }
 
