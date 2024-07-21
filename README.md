@@ -63,6 +63,7 @@ assignment → IDENTIFIER "=" assignment | equality
 ```
 
 Beginning of variable assignment. Declaration is different for mutation of the variable.
+It is possible to not allow mutability in variable, like a SSA mode.
 
 ## Tests
 
