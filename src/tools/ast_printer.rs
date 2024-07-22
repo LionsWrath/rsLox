@@ -2,6 +2,7 @@ use crate::visit_expr::ExprVisitor;
 use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable};
 use crate::visit_stmt::StmtVisitor;
 use crate::ast_stmt::{Stmt, Expression, Print, Var};
+use crate::error::EvaluationError;
 
 pub struct AstPrinter;
 
@@ -76,9 +77,7 @@ impl ExprVisitor<String> for AstPrinter {
         
         let name = match v.name.value {
             Some(ref n) => n.clone(),
-            None => return Err(
-                EvaluationError::new_var("No name in token defined for variable".to_string())
-            ),
+            None => panic!("No name in token defined for variable"),
         };
 
         format!("(VAR {})", name)
