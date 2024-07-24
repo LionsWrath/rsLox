@@ -166,7 +166,32 @@ impl Parser {
     }
 
     fn expression(&mut self) -> Expr {
-        self.ternary()
+        self.assignment()
+    }
+
+    fn assignment(&mut self) -> Expr {
+        let expr: Expr = self.ternary();
+
+        if self.match_types(vec![
+            TokenType::EQUAL,
+        ]) {
+            let equals = self.previous();
+            let value  = self.assignment();
+
+            match expr {
+                Expr::VARIABLE(var) => {
+                    return Expr::ASSIGN(
+                        Assign::new(
+                            var.name,
+                            Box::new(value)
+                        )
+                    );
+                },
+                _ => panic!("[PARSER] {} - Invalid assignment target", equals)
+            }
+        }
+
+        expr
     }
 
     fn ternary(&mut self) -> Expr {
