@@ -1,8 +1,7 @@
 use crate::visit_expr::ExprVisitor;
-use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable};
+use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable, Assign};
 use crate::visit_stmt::StmtVisitor;
 use crate::ast_stmt::{Stmt, Expression, Print, Var};
-use crate::error::EvaluationError;
 
 pub struct AstPrinter;
 
@@ -83,7 +82,7 @@ impl ExprVisitor<String> for AstPrinter {
         format!("(VARIABLE {})", name)
     }
 
-    fn visit_assign(&mut self, a: &crate::ast_expr::Assign) -> String {
+    fn visit_assign(&mut self, a: &Assign) -> String {
         unimplemented!()
     }
 }

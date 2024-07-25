@@ -27,4 +27,13 @@ impl Environment {
 
         panic!("Undefined variable {}", name);
     }
+
+    pub fn assign(&mut self, name: String, value: Literal) {
+        if self.values.contains_key(&name) {
+            self.values.insert(name, value);
+            return;
+        }
+
+        panic!("Undefined variable {}", name);
+    }
 }

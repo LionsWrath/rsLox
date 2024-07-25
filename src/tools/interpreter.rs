@@ -20,7 +20,7 @@
 use crate::environment::Environment;
 use crate::visit_expr::ExprVisitor;
 use crate::visit_stmt::StmtVisitor;
-use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable};
+use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable, Assign};
 use crate::ast_stmt::{Expression, Stmt, Print, Var};
 use crate::token_type::TokenType;
 use crate::error::EvaluationError;
@@ -195,8 +195,25 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
         Ok(self.environment.get(&name).clone())
     }
 
-    fn visit_assign(&mut self, a: &crate::ast_expr::Assign) -> Result<Literal, EvaluationError> {
-        unimplemented!()
+    fn visit_assign(&mut self, a: &Assign) -> Result<Literal, EvaluationError> {
+        let value: Literal = match self.visit_expr(&a.value) {
+            Ok(val) => val,
+            Err(err) => return Err(err),
+        };
+
+        let name = match a.name.value {
+            Some(ref n) => n.clone(),
+            None => return Err(
+                EvaluationError::new_var("No name in token defined for variable".to_string())
+            ),
+        };
+
+        self.environment.assign(
+            name,
+            value.clone()
+        );
+
+        Ok(value)
     }
 }
 
