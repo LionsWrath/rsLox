@@ -83,7 +83,13 @@ impl ExprVisitor<String> for AstPrinter {
     }
 
     fn visit_assign(&mut self, a: &Assign) -> String {
-        unimplemented!()
+        
+        let name = match a.name.value {
+            Some(ref n) => n.clone(),
+            None => panic!("No name in token defined for variable"),
+        };
+
+        format!("(ASSIGN {} = {})", name, self.visit_expr(&a.value))
     }
 }
 
