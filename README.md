@@ -94,6 +94,10 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
            | ( "/" | "*" ) factor ;
 ```
 
+## Scope
+
+TODO
+
 ## Tests
 
 TODO (will add tests for each part later)
