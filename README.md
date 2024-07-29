@@ -96,7 +96,7 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
 
 ## Scope (Lexical Scope)
 
-TODO
+Support for shadowing (like rust).
 
 ## Tests
 
