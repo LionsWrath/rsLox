@@ -94,7 +94,7 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
            | ( "/" | "*" ) factor ;
 ```
 
-## Scope
+## Scope (Lexical Scope)
 
 TODO
 
