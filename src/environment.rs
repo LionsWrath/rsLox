@@ -3,7 +3,8 @@ use crate::ast_expr::*;
 use crate::error::RuntimeError;
 
 pub struct Environment {
-    values: HashMap<String, Literal>
+    values: HashMap<String, Literal>,
+    enclosing: Option<&mut Environment>,
 }
 
 impl Environment {
@@ -12,7 +13,18 @@ impl Environment {
         let values = HashMap::new();
 
         Environment {
-            values
+            values,
+            None
+        }
+    }
+
+    pub fn new_enclosing(enclosing: &mut Environment) -> Self {
+
+        let values = HashMap::new();
+
+        Environment {
+            values,
+            enclosing
         }
     }
 
@@ -25,7 +37,10 @@ impl Environment {
             return &self.values[name];
         }
 
-        panic!("Undefined variable {}", name);
+        match self.enclosing {
+            Some(env) => return env.get(name),
+            None => panic!("Undefined variable {}", name)
+        }
     }
 
     pub fn assign(&mut self, name: String, value: Literal) {
@@ -34,6 +49,9 @@ impl Environment {
             return;
         }
 
-        panic!("Undefined variable {}", name);
+        match self.enclosing {
+            Some(env) => env.get(name),
+            None => panic!("Undefined variable {}", name)
+        }
     }
 }
