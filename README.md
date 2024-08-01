@@ -96,7 +96,14 @@ primary    → NUMBER | STRING | "true" | "false" | "nil"
 
 ## Scope (Lexical Scope)
 
-Support for shadowing (like rust).
+Support for shadowing (like rust) and hierarchical environments.
+
+### Block Syntax and semantics
+
+```
+statement → exprStmt | printStmt | block;
+block     → "{" declaration* "}";
+```
 
 ## Tests
 
