@@ -21,7 +21,7 @@ use crate::environment::Environment;
 use crate::visit_expr::ExprVisitor;
 use crate::visit_stmt::StmtVisitor;
 use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable, Assign};
-use crate::ast_stmt::{Expression, Stmt, Print, Var};
+use crate::ast_stmt::{Expression, Stmt, Print, Var, Block};
 use crate::token_type::TokenType;
 use crate::error::EvaluationError;
 
@@ -220,6 +220,7 @@ impl ExprVisitor<Result<Literal, EvaluationError>> for Interpreter {
 impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
     fn visit_stmt(&mut self, s: &Stmt) -> Result<Literal, EvaluationError> {
         return match s {
+            Stmt::BLOCK(b) => self.visit_block(&b),
             Stmt::EXPRESSION(e) => self.visit_expression(&e),
             Stmt::PRINT(p) => self.visit_print(&p),
             Stmt::VAR(v) => self.visit_var(&v)
@@ -266,5 +267,9 @@ impl StmtVisitor<Result<Literal, EvaluationError>> for Interpreter  {
         }
 
         return Ok(Literal::NIL);
+    }
+
+    fn visit_block(&mut self, b: &Block) -> Result<Literal, EvaluationError> {
+        unimplemented!()
     }
 }

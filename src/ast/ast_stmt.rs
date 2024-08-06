@@ -3,6 +3,7 @@ use crate::token::Token;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Stmt {
+    BLOCK(Block),
     EXPRESSION(Expression),
     PRINT(Print),
     VAR(Var),
@@ -48,4 +49,18 @@ impl Var {
         }
     }
 }
+
+#[derive(Clone, PartialEq, Debug)]
+pub struct Block {
+    pub statements: Vec<Stmt>,
+}
+
+impl Block {
+   pub fn new(statements: Vec<Stmt>) -> Self {
+        Block {
+            statements,
+        }
+    }
+}
+
 

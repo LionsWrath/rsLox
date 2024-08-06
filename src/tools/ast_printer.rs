@@ -1,7 +1,7 @@
 use crate::visit_expr::ExprVisitor;
 use crate::ast_expr::{Unary, Binary, Grouping, Expr, Literal, Comma, Ternary, Variable, Assign};
 use crate::visit_stmt::StmtVisitor;
-use crate::ast_stmt::{Stmt, Expression, Print, Var};
+use crate::ast_stmt::{Stmt, Expression, Print, Var, Block};
 
 pub struct AstPrinter;
 
@@ -96,6 +96,7 @@ impl ExprVisitor<String> for AstPrinter {
 impl StmtVisitor<String> for AstPrinter {
     fn visit_stmt(&mut self, s: &Stmt) -> String {
         return match s {
+            Stmt::BLOCK(b) => self.visit_block(&b),
             Stmt::PRINT(e) => self.visit_print(&e),
             Stmt::EXPRESSION(p) => self.visit_expression(&p),
             Stmt::VAR(v) => self.visit_var(&v),
@@ -128,5 +129,9 @@ impl StmtVisitor<String> for AstPrinter {
             None => format!("(VAR {} NIL)", name)
         }
 
+    }
+
+    fn visit_block(&mut self, b: &Block) -> String {
+        unimplemented!()
     }
 }

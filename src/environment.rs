@@ -1,26 +1,27 @@
 use std::collections::HashMap;
 use crate::ast_expr::*;
-use crate::error::RuntimeError;
 
-pub struct Environment {
+pub struct Environment<'a> {
     values: HashMap<String, Literal>,
-    enclosing: Option<&mut Environment>,
+    enclosing: Option<&'a mut Environment<'a>>,
 }
 
-impl Environment {
+impl<'a> Environment<'a> {
     pub fn new() -> Self {
 
         let values = HashMap::new();
+        let enclosing = None;
 
         Environment {
             values,
-            None
+            enclosing
         }
     }
 
-    pub fn new_enclosing(enclosing: &mut Environment) -> Self {
+    pub fn new_enclosing(env: &'a mut Environment<'a>) -> Self {
 
         let values = HashMap::new();
+        let enclosing = Some(env);
 
         Environment {
             values,
