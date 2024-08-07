@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 use crate::ast_expr::*;
 
-pub struct Environment<'a> {
+pub struct Environment {
     values: HashMap<String, Literal>,
-    enclosing: Option<&'a mut Environment<'a>>,
+    enclosing: Option<& mut Environment>,
 }
 
-impl<'a> Environment<'a> {
+impl Environment {
     pub fn new() -> Self {
 
         let values = HashMap::new();
@@ -18,7 +18,7 @@ impl<'a> Environment<'a> {
         }
     }
 
-    pub fn new_enclosing(env: &'a mut Environment<'a>) -> Self {
+    pub fn new_enclosing(env: & mut Environment) -> Self {
 
         let values = HashMap::new();
         let enclosing = Some(env);
