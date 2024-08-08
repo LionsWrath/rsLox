@@ -105,8 +105,6 @@ statement → exprStmt | printStmt | block;
 block     → "{" declaration* "}";
 ```
 
-Testing new git on note.
-
 ## Tests
 
 TODO (will add tests for each part later)
