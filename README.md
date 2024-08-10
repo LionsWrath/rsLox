@@ -105,6 +105,8 @@ statement → exprStmt | printStmt | block;
 block     → "{" declaration* "}";
 ```
 
+Teste teste
+
 ## Tests
 
 TODO (will add tests for each part later)
