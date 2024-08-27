@@ -3,7 +3,7 @@ use crate::ast_expr::*;
 
 pub struct Environment {
     values: HashMap<String, Literal>,
-    enclosing: Option<& mut Environment>,
+    enclosing: Option<Box<Self>>,
 }
 
 impl Environment {
@@ -18,15 +18,21 @@ impl Environment {
         }
     }
 
-    pub fn new_enclosing(env: & mut Environment) -> Self {
+    pub fn build_enclosing(env: & mut Environment) {
 
         let values = HashMap::new();
-        let enclosing = Some(env);
+        let enclosing = None;
 
-        Environment {
-            values,
-            enclosing
-        }
+        let new_enclosing = Some(
+            Box::new(
+                Environment {
+                    values,
+                    enclosing
+                }
+            )
+        );
+
+        env.enclosing = new_enclosing;
     }
 
     pub fn define(&mut self, name: String, value: Literal) {
@@ -38,20 +44,21 @@ impl Environment {
             return &self.values[name];
         }
 
-        match self.enclosing {
+        match &mut self.enclosing {
             Some(env) => return env.get(name),
             None => panic!("Undefined variable {}", name)
         }
     }
 
+    // Review this function
     pub fn assign(&mut self, name: String, value: Literal) {
         if self.values.contains_key(&name) {
             self.values.insert(name, value);
             return;
         }
 
-        match self.enclosing {
-            Some(env) => env.get(name),
+        match &mut self.enclosing {
+            Some(env) => env.assign(name, value),
             None => panic!("Undefined variable {}", name)
         }
     }
