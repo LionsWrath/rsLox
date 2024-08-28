@@ -18,7 +18,7 @@ impl Environment {
         }
     }
 
-    pub fn build_enclosing(env: & mut Environment) {
+    pub fn add_enclosing(env: & mut Environment) {
 
         let values = HashMap::new();
         let enclosing = None;
